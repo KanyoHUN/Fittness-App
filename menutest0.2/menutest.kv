@@ -1,0 +1,72 @@
+ScreenManager1:
+
+
+<ScreenManager1>:
+    MenuScreen:
+        name: 'menu'
+    VideoScreen:
+        name: 'video'
+    LinkListScreen:
+        name: 'links'
+    NoNetScreen:
+        name: 'net'
+
+<MenuScreen>:
+    id: MenuScreen
+    RelativeLayout:
+        Button:
+            text: 'Video Links'
+            pos_hint: {"center_x": .5, "center_y": .6}
+            size_hint: .2, .1
+            on_press: root.on_video_links_button_press()
+        Button:
+            text: 'Quit'
+            pos_hint: {"center_x": .5, "center_y": .45}
+            size_hint: .1, .05
+            on_press: app.stop()
+
+<NoNetScreen>:
+    id: NoNetScreen
+    RelativeLayout:
+        Label:
+            text:'NO INTERNET CONNECTION!'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint: .5, .5
+        Button:
+            text: 'OK'
+            pos_hint: {"center_x": .5, "center_y": .4}
+            size_hint: .1, .1
+            on_press: root.change_screen_back()
+
+<LinkListScreen>:
+    id:LinkListScreen
+    ScrollView:
+        VideoButtons:
+            padding: ("20dp", "20dp", "20dp", "20dp")
+            spacing: "20dp", "20dp"
+            Button:
+                text: 'Back To Menu'
+                size_hint: 1, None
+                height: dp(150)
+                on_press: root.back_to_menu_button_press()
+
+<VideoButtons>:
+
+
+<VideoScreen>:
+    id: VideoScreen
+    BoxLayout:
+        orientation: "vertical"
+        VideoPlayer:
+            source: root.my_source
+            allow_stretch: True
+        Button:
+            text: 'Load Video'
+            size_hint: 1, .2
+            on_press: root.on_load_video_press()
+            disabled: root.video_loaded
+        Button:
+            text: 'Back To Videos'
+            size_hint: 1, .2
+            on_press: root.on_back_to_videos_button_press()
+            disabled: not root.video_loaded

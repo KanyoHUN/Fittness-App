@@ -1,0 +1,171 @@
+ScreenManager1:
+
+
+<ScreenManager1>:
+    MenuScreen:
+        name: 'menu'
+    VideoScreen:
+        name: 'video'
+    LinkListScreen:
+        name: 'links'
+    NoNetScreen:
+        name: 'net'
+    WorkoutEditor:
+        name: 'editor'
+
+<MenuScreen>:
+    id: MenuScreen
+    RelativeLayout:
+        Button:
+            text: 'Video Links'
+            pos_hint: {"center_x": .5, "center_y": .6}
+            size_hint: .2, .1
+            on_press: root.on_video_links_button_press()
+        Button:
+            text: 'Workout Editor'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint: .2, .1
+            on_press: root.on_workout_editor_button_press()
+        Button:
+            text: 'Quit'
+            pos_hint: {"center_x": .5, "center_y": .35}
+            size_hint: .1, .05
+            on_press: app.stop()
+
+<NoNetScreen>:
+    id: NoNetScreen
+    RelativeLayout:
+        Label:
+            text:'NO INTERNET CONNECTION!'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint: .5, .5
+        Button:
+            text: 'OK'
+            pos_hint: {"center_x": .5, "center_y": .4}
+            size_hint: .1, .1
+            on_press: root.change_screen_back()
+
+<LinkListScreen>:
+    id:LinkListScreen
+    ScrollView:
+        VideoButtons:
+            padding: ("20dp", "20dp", "20dp", "20dp")
+            spacing: "20dp", "20dp"
+            Button:
+                text: 'Back To Menu'
+                size_hint: 1, None
+                height: dp(150)
+                on_press: root.back_to_menu_button_press()
+
+<VideoButtons>:
+
+
+<VideoScreen>:
+    id: VideoScreen
+    BoxLayout:
+        orientation: "vertical"
+        VideoPlayer:
+            source: root.my_source
+            allow_stretch: True
+        Button:
+            text: 'Load Video'
+            size_hint: 1, .2
+            on_press: root.on_load_video_press()
+            disabled: root.video_loaded
+        Button:
+            text: 'Back To Videos'
+            size_hint: 1, .2
+            on_press: root.on_back_to_videos_button_press()
+            disabled: not root.video_loaded
+
+<WorkoutEditor>:
+    id: WorkoutEditor
+    on_pre_enter: root.add_buttons()
+    Display1:
+
+
+<Display1>:
+    Label:
+        text: 'Mon'
+        pos_hint: {"center_x": 0.07, "center_y": .18}
+    Label:
+        text: 'Tue'
+        pos_hint: {"center_x": 0.21, "center_y": .18}
+    Label:
+        text: 'Wed'
+        pos_hint: {"center_x": 0.36, "center_y": .18}
+    Label:
+        text: 'Thurs'
+        pos_hint: {"center_x": 0.5, "center_y": .18}
+    Label:
+        text: 'Fri'
+        pos_hint: {"center_x": 0.64, "center_y": .18}
+    Label:
+        text: 'Sat'
+        pos_hint: {"center_x": 0.785, "center_y": .18}
+    Label:
+        text: 'Sun'
+        pos_hint: {"center_x": 0.925, "center_y": .18}
+    Button:
+        text: 'Add New'
+        size_hint: .33, .1
+        pos_hint: {"center_x": 0.15, "center_y": .1}
+        on_press: root.on_add_new_button_press()
+    Button:
+        text: 'Delete All'
+        size_hint: .33, .1
+        pos_hint: {"center_x": 0.50, "center_y": .1}
+    Button:
+        text: 'Back'
+        size_hint: .33, .1
+        pos_hint: {"center_x": 0.85, "center_y": .1}
+        on_press: root.on_back_button_press()
+
+<WorkoutTemplate>:
+    on_leave: root.on_temp_leave()
+    Label:
+        id: workout_types_selected
+        text: 'Selected Workout types: '
+        font_size: 12
+        pos_hint: {"center_x": .5, "center_y": .95}
+
+    Spinner:
+        text: "Add Workout Type"
+        values: ['Pull', 'Push', 'Leg', 'Core', 'Cardio']
+        pos_hint: {"center_x": .25, "center_y": .9}
+        size_hint: .4, .05
+
+        on_text: root.spinner_clicked(self.text)
+    Button:
+        text: "Remove last"
+        pos_hint : {"center_x": .7, "center_y": .9}
+        size_hint : .4, .05
+        on_press: root.on_remove_last_button_press()
+    Spinner:
+        text: "Starting time(by hour)"
+        values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+        pos_hint: {"center_x": .25, "center_y": .80}
+        size_hint: .4, .05
+
+        on_text: root.starting_time_selected(self.text)
+    Spinner:
+        id: end_time_spinner
+        text: "End time(by hour)"
+        values: []
+        pos_hint: {"center_x": .7, "center_y": .80}
+        size_hint: .4, .05
+        disabled: True
+
+        on_text: root.end_time_selected(self.text)
+    Button:
+        id: save_button
+        text: "Save Workout"
+        size_hint: .3, .05
+        pos_hint: {"center_x": .3, "center_y": .1}
+        on_press: root.on_save_workout_button_press()
+        disabled: True
+    Button:
+        text: 'Delete Workout'
+        size_hint: .3, .05
+        pos_hint: {"center_x": .7, "center_y": .1}
+        on_press: root.on_delete_workout_button_press()

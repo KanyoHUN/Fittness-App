@@ -2,6 +2,7 @@ import os
 import certifi
 import requests
 import mysql.connector
+import random
 from kivy.app import App
 from kivy.graphics import Color, Line
 from kivy.metrics import dp
@@ -25,6 +26,7 @@ video_dict = {}
 previous_screen = 'menu'
 workouts = []
 workout_buttons = []
+workout_ids = set(())
 
 
 class ScreenManager1(ScreenManager):
@@ -256,7 +258,9 @@ class WorkoutTemplate(Screen):
         self.label_text = 'Selected Workout types: '
         self.start_time = 99
         self.end_time = 99
+        self.time_difference = 99
         self.workout_name = ''
+        self.workout_id = 0
 
     def spinner_clicked(self, value):
         if value not in self.selected_types:
@@ -268,14 +272,34 @@ class WorkoutTemplate(Screen):
     def on_save_workout_button_press(self):
         global workouts
         global workout_buttons
+        global workout_ids
         global previous_screen
-        time_difference = self.end_time - self.start_time
+        t_diff = self.end_time - self.start_time
         if self not in workouts:
             workouts.append(self)
-        self.workout_name = 'Workout ' + str(len(workouts))
-        button = Button(text=self.workout_name, size_hint=(1/7, (0.8/24)*time_difference), pos_hint={"center_x": 1/7/2, "top":(1-(.8/24)*self.start_time)})
-        button.on_press = self.on_workout_button_click
-        workout_buttons.append(button)
+            self.workout_name = 'Workout ' + str(len(workouts))
+            while True:
+                if self.workout_id == 0:
+                    temp = random.randint(1, 200)
+                    if temp not in workout_ids:
+                        workout_ids.add(temp)
+                        self.workout_id = temp
+                        break
+        if self.time_difference == 99:
+            self.time_difference = t_diff
+            button = Button(text=self.workout_name, size_hint=(1/7, (0.8/24)*self.time_difference), pos_hint={"center_x": 1/7/2, "top":(1-(.8/24)*self.start_time)})
+            button.on_press = self.on_workout_button_click
+            workout_buttons.append(button)
+        elif not t_diff == self.time_difference:
+            self.time_difference = t_diff
+            if self.workouts_length_on_create > len(workouts):
+                diff = self.workouts_length_on_create - len(workouts)
+                self.workout_index -= diff
+            workout_buttons.pop(self.workout_index)
+            button = Button(text=self.workout_name, size_hint=(1 / 7, (0.8 / 24) * self.time_difference),
+                            pos_hint={"center_x": 1 / 7 / 2, "top": (1 - (.8 / 24) * self.start_time)})
+            button.on_press = self.on_workout_button_click
+            workout_buttons.insert(self.workout_index, button)
 
         self.manager.current = 'editor'
         previous_screen = 'editor'
@@ -284,6 +308,7 @@ class WorkoutTemplate(Screen):
         global workout_buttons
         global workouts
         global previous_screen
+        global workout_ids
 
         if self.workouts_length_on_create > len(workouts):
             diff = self.workouts_length_on_create - len(workouts)
@@ -291,6 +316,7 @@ class WorkoutTemplate(Screen):
 
         workouts.pop(self.workout_index)
         workout_buttons.pop(self.workout_index)
+        workout_ids.remove(self.workout_id)
 
         self.manager.current = 'editor'
         previous_screen = 'editor'
@@ -298,7 +324,7 @@ class WorkoutTemplate(Screen):
     def on_temp_leave(self):
         global workouts
         if self.name == 'temp':
-            self.name = self.workout_name
+            self.name = str(self.workout_id)
         else:
             pass
 

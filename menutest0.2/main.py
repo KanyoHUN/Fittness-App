@@ -3,7 +3,9 @@ import certifi
 import requests
 import mysql.connector
 import random
+import pickle
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.graphics import Color, Line
 from kivy.metrics import dp
 from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
@@ -35,6 +37,52 @@ class ScreenManager1(ScreenManager):
 
 class MenuScreen(Screen):
     has_connection = True
+    workouts_loaded = False
+    load_able_workouts = []
+
+    def load_workouts(self):
+        global workout_ids
+        global workouts
+        global workout_buttons
+
+        if not self.workouts_loaded:
+            self.workouts_loaded = True
+            self.load_able_workouts = []
+            if os.path.isfile("save.dat"):
+                with open("save.dat", "rb") as file:
+                    self.load_able_workouts = pickle.load(file)
+                    workout_ids = pickle.load(file)
+
+                for workout_d in self.load_able_workouts:
+                    w = WorkoutTemplate(name=str(workout_d["workout_index"]))
+                    self.manager.add_widget(w)
+                    w.selected_types = workout_d["selected_types"]
+                    w.workout_index = workout_d["workout_index"]
+                    w.workouts_length_on_create = workout_d["workouts_length_on_create"]
+                    w.screen_name = workout_d["screen_name"]
+                    w.label_text = workout_d["label_text"]
+                    w.start_time = workout_d["start_time"]
+                    w.end_time = workout_d["end_time"]
+                    w.time_difference = workout_d["time_difference"]
+                    w.workout_day = workout_d["workout_day"]
+                    w.workout_name = workout_d["workout_name"]
+                    w.workout_id = workout_d["workout_id"]
+                    w.ids.start_time_spinner.text = workout_d["ids.start_time_spinner.text"]
+                    w.ids.end_time_spinner.text = workout_d["ids.end_time_spinner.text"]
+                    w.ids.workout_day_text.text = workout_d["ids.workout_day_text.text"]
+                    w.ids.workout_name_input.text = workout_d["ids.workout_name_input.text"]
+                    w.ids.custom_desc.text = workout_d["ids.custom_desc.text"]
+                    w.ids.workout_types_selected.text = workout_d["ids.workout_types_selected.text"]
+                    w.ids.delete_button.disabled = False
+                    workouts.append(w)
+
+                for worko in workouts:
+                    b = Button(text=worko.workout_name, font_size=25, size_hint=(1 / 7, (0.8 / 24) * worko.time_difference),
+                               pos_hint={"right": 1 / 7 * worko.workout_day, "top": (1 - (.8 / 24) * (worko.start_time-1))})
+                    b.on_press = worko.on_workout_button_click
+                    workout_buttons.append(b)
+        else:
+            pass
 
     def on_video_links_button_press(self):
         global video_dict
@@ -75,6 +123,7 @@ class MenuScreen(Screen):
         global previous_screen
         self.manager.current = 'editor'
         previous_screen = 'editor'
+
 
 class LinkListScreen(Screen):
 
@@ -227,6 +276,18 @@ class WorkoutEditor(Screen):
             self.parent.manager.current = 'temp'
             previous_screen = 'temp'
 
+        def on_delete_all_button_press(self):
+            global workouts
+            global workout_buttons
+            len_workouts = len(workouts)
+            workout_buttons = []
+            workouts = []
+            for i in range(0, len_workouts):
+                self.parent.add_buttons()
+
+            if os.path.isfile("save.dat"):
+                os.remove("save.dat")
+
     def add_buttons(self):
         global workout_buttons
         global workouts
@@ -239,7 +300,7 @@ class WorkoutEditor(Screen):
 
         for child in self.manager.children:
             if isinstance(child, WorkoutTemplate) and child not in workouts:
-                self.remove_widget(child)
+                self.manager.remove_widget(child)
                 del child
 
         for button in workout_buttons:
@@ -248,6 +309,9 @@ class WorkoutEditor(Screen):
 
 
 class WorkoutTemplate(Screen):
+    days_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5,
+                 'Saturday': 6, 'Sunday': 7}
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         global workouts
@@ -259,8 +323,15 @@ class WorkoutTemplate(Screen):
         self.start_time = 99
         self.end_time = 99
         self.time_difference = 99
-        self.workout_name = ''
+        self.ids.start_time_spinner.text = 'Starting time(by hour)'
+        self.ids.end_time_spinner.text = 'End time(by hour)'
+        self.workout_day = 0
+        self.ids.workout_day_text.text = 'Select Day'
+        self.workout_name = 'My workout'
+        self.ids.workout_name_input.text = self.workout_name
+        self.ids.custom_desc.text = 'Customisable workout description.'
         self.workout_id = 0
+        self.ids.workout_types_selected.text = 'Selected Workout types: '
 
     def spinner_clicked(self, value):
         if value not in self.selected_types:
@@ -277,7 +348,7 @@ class WorkoutTemplate(Screen):
         t_diff = self.end_time - self.start_time
         if self not in workouts:
             workouts.append(self)
-            self.workout_name = 'Workout ' + str(len(workouts))
+            self.workout_name = self.ids.workout_name_input.text
             while True:
                 if self.workout_id == 0:
                     temp = random.randint(1, 200)
@@ -285,22 +356,29 @@ class WorkoutTemplate(Screen):
                         workout_ids.add(temp)
                         self.workout_id = temp
                         break
+
+        if self.workouts_length_on_create > len(workouts):
+            diff = self.workouts_length_on_create - len(workouts)
+            self.workout_index -= diff
+
         if self.time_difference == 99:
             self.time_difference = t_diff
-            button = Button(text=self.workout_name, size_hint=(1/7, (0.8/24)*self.time_difference), pos_hint={"center_x": 1/7/2, "top":(1-(.8/24)*self.start_time)})
+            button = Button(text=self.workout_name, font_size=25, size_hint=(1/7, (0.8/24)*self.time_difference),
+                            pos_hint={"right": 1/7*self.workout_day, "top": (1-(.8/24)*(self.start_time-1))})
             button.on_press = self.on_workout_button_click
             workout_buttons.append(button)
-        elif not t_diff == self.time_difference:
+        else:
             self.time_difference = t_diff
-            if self.workouts_length_on_create > len(workouts):
-                diff = self.workouts_length_on_create - len(workouts)
-                self.workout_index -= diff
-            workout_buttons.pop(self.workout_index)
-            button = Button(text=self.workout_name, size_hint=(1 / 7, (0.8 / 24) * self.time_difference),
-                            pos_hint={"center_x": 1 / 7 / 2, "top": (1 - (.8 / 24) * self.start_time)})
-            button.on_press = self.on_workout_button_click
-            workout_buttons.insert(self.workout_index, button)
+            self.workout_name = self.ids.workout_name_input.text
+            workout_buttons[self.workout_index].text = self.workout_name
+            workout_buttons[self.workout_index].size_hint = (1/7, (0.8/24)*self.time_difference)
+            workout_buttons[self.workout_index].pos_hint = {"right": 1/7*self.workout_day,
+                                                            "top": (1-(.8/24)*(self.start_time-1))}
 
+        self.ids.delete_button.disabled = False
+        if os.path.isfile("save.dat"):
+            os.remove("save.dat")
+        save_workouts()
         self.manager.current = 'editor'
         previous_screen = 'editor'
 
@@ -317,6 +395,16 @@ class WorkoutTemplate(Screen):
         workouts.pop(self.workout_index)
         workout_buttons.pop(self.workout_index)
         workout_ids.remove(self.workout_id)
+
+        if os.path.isfile("save.dat"):
+            os.remove("save.dat")
+        save_workouts()
+
+        self.manager.current = 'editor'
+        previous_screen = 'editor'
+
+    def on_back_without_saving_button_press(self):
+        global previous_screen
 
         self.manager.current = 'editor'
         previous_screen = 'editor'
@@ -336,7 +424,6 @@ class WorkoutTemplate(Screen):
     def on_remove_last_button_press(self):
         if len(self.selected_types) > 0:
             removable = self.selected_types.pop()
-            print(removable)
             text_len = len(self.label_text)
             for i in range(text_len, text_len-(len(removable)+2), -1):
                 length = len(self.label_text)
@@ -344,24 +431,70 @@ class WorkoutTemplate(Screen):
             self.ids.workout_types_selected.text = self.label_text
 
     def starting_time_selected(self, value):
-        self.ids.end_time_spinner.text = 'End time(by hour)'
-        self.ids.save_button.disabled = True
-        self.start_time = int(value)
-        end_time_values = []
-        for i in range(self.start_time+1, 25):
-            end_time_values.append(str(i))
-        self.ids.end_time_spinner.values = end_time_values
-        self.ids.end_time_spinner.disabled = False
+        worked = True
+        try:
+            int(value)
+        except:
+            worked = False
+
+        if worked:
+            self.ids.end_time_spinner.text = 'End time(by hour)'
+            self.ids.save_button.disabled = True
+            self.start_time = int(value)
+            end_time_values = []
+            for i in range(self.start_time+1, 25):
+                end_time_values.append(str(i))
+            self.ids.end_time_spinner.values = end_time_values
+            self.ids.end_time_spinner.disabled = False
+        else:
+            pass
 
     def end_time_selected(self, value):
         if not value == 'End time(by hour)':
             self.end_time = int(value)
-            self.ids.save_button.disabled = False
+            if not self.workout_day == 0:
+                self.ids.save_button.disabled = False
+        else:
+            pass
+
+    def day_selected(self, value):
+        if not value == 'Select Day':
+            self.workout_day = self.days_dict[value]
+            if not self.ids.end_time_spinner.text == 'End time(by hour)':
+                self.ids.save_button.disabled = False
         else:
             pass
 
 
+def save_workouts():
+    global workout_ids
+
+    save_able_workouts = []
+
+    for workout in workouts:
+        workout_dict = {"selected_types": workout.selected_types, "workout_index": workout.workout_index,
+                        "workouts_length_on_create": workout.workouts_length_on_create,
+                        "screen_name": workout.screen_name, "label_text": workout.label_text,
+                        "start_time": workout.start_time, "end_time": workout.end_time,
+                        "time_difference": workout.time_difference, "workout_day": workout.workout_day,
+                        "workout_name": workout.workout_name, "workout_id": workout.workout_id,
+                        "ids.start_time_spinner.text": workout.ids.start_time_spinner.text,
+                        "ids.end_time_spinner.text": workout.ids.end_time_spinner.text,
+                        "ids.workout_day_text.text": workout.ids.workout_day_text.text,
+                        "ids.workout_name_input.text": workout.ids.workout_name_input.text,
+                        "ids.custom_desc.text": workout.ids.custom_desc.text,
+                        "ids.workout_types_selected.text": workout.ids.workout_types_selected.text}
+        save_able_workouts.append(workout_dict)
+
+    with open("save.dat", "wb") as f:
+        pickle.dump(save_able_workouts, f)
+        pickle.dump(workout_ids, f)
+
+
 class MenuTestApp(App):
+    # def __init__(self, **kwargs):
+        # super().__init__(**kwargs)
+        # Window.size = (540, 1200)
     pass
 
 

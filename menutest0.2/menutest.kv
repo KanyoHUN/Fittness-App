@@ -48,6 +48,7 @@ ScreenManager1:
 
 <LinkListScreen>:
     id:LinkListScreen
+    on_pre_enter: root.load_video_list()
     ScrollView:
         VideoButtons:
             padding: ("20dp", "20dp", "20dp", "20dp")
@@ -63,21 +64,18 @@ ScreenManager1:
 
 <VideoScreen>:
     id: VideoScreen
+    on_pre_enter: root.load_video()
     BoxLayout:
         orientation: "vertical"
         VideoPlayer:
-            source: root.my_source
+            id: video
             allow_stretch: True
         Button:
-            text: 'Load Video'
-            size_hint: 1, .2
-            on_press: root.on_load_video_press()
-            disabled: root.video_loaded
-        Button:
+            id: back_button
             text: 'Back To Videos'
             size_hint: 1, .2
+            disabled: True
             on_press: root.on_back_to_videos_button_press()
-            disabled: not root.video_loaded
 
 <WorkoutEditor>:
     id: WorkoutEditor
@@ -178,6 +176,15 @@ ScreenManager1:
         size_hint: .4, .05
 
         on_text: root.day_selected(self.text)
+    Spinner:
+        id: examples
+        text: ''
+        values: []
+        pos_hint: {"center_x": .7, "center_y": .6}
+        size_hint: .4, .05
+        disabled: True
+
+        on_text: root.example_selected(self.text)
     TextInput:
         id: custom_desc
         text: ''

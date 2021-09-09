@@ -9,16 +9,17 @@ from kivy.core.window import Window
 from kivy.graphics import Color, Line
 from kivy.metrics import dp
 from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.spinner import Spinner
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.videoplayer import VideoPlayer
 from functools import partial
-
 from kivy.uix.widget import Widget
 from pytube import YouTube
 
@@ -74,6 +75,12 @@ class MenuScreen(Screen):
                     w.ids.custom_desc.text = workout_d["ids.custom_desc.text"]
                     w.ids.workout_types_selected.text = workout_d["ids.workout_types_selected.text"]
                     w.ids.delete_button.disabled = False
+                    w.ids.examples.text = workout_d["ids.examples.text"]
+                    w.examples_values = workout_d["examples_values"]
+                    w.ids.examples.values = w.examples_values
+                    w.examples_dict = workout_d["examples_dict"]
+                    w.added_example_types = workout_d["added_example_types"]
+                    w.ids.examples.disabled = False
                     workouts.append(w)
 
                 for worko in workouts:
@@ -110,14 +117,15 @@ class MenuScreen(Screen):
     def load_video_dict(self):
         global video_dict
 
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313', passwd='IPt9fRRDYS', database='sql11434313')
+        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                       passwd='IPt9fRRDYS', database='sql11434313')
         mycursor = mydb.cursor()
         mycursor.execute("Select links, titles from Videos")
         myresult = mycursor.fetchall()
 
         for row in myresult:
             video_dict[row[1]] = row[0]
-            print("Link loaded")
+            # print("Link loaded")
 
     def on_workout_editor_button_press(self):
         global previous_screen
@@ -126,6 +134,31 @@ class MenuScreen(Screen):
 
 
 class LinkListScreen(Screen):
+    global video_dict
+    list_loaded = False
+
+    def load_video_list(self):
+        if self.list_loaded:
+            pass
+        else:
+            for child_outer in self.children:
+                if isinstance(child_outer, ScrollView):
+                    for child in child_outer.children:
+                        if isinstance(child, VideoButtons):
+                            i = 0
+                            for video in video_dict.keys():
+                                b = Button(text=video, size_hint=(1, None), height=dp(150))
+                                b.on_press = partial(child.video_button_press, video)
+                                child.add_widget(b)
+                                i += 1
+                            if i == 0:
+                                self.list_loaded = False
+                            else:
+                                self.list_loaded = True
+                        else:
+                            pass
+                else:
+                    pass
 
     def back_to_menu_button_press(self):
         self.manager.current = 'menu'
@@ -134,34 +167,12 @@ class LinkListScreen(Screen):
 
 
 class VideoButtons(StackLayout):
-    global video_dict
-    has_connection = True
-    list_loaded = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (1, None)
         self.bind(minimum_height=self.setter('height'))
-
-        b = Button(text='Refresh List', size_hint=(1, None), height=dp(150))
-        b.on_press = self.load_video_list
-        self.add_widget(b)
-
-    def load_video_list(self):
-        global video_dict
-        if self.list_loaded:
-            pass
-        else:
-            i = 0
-            for video in video_dict.keys():
-                b = Button(text=video, size_hint=(1, None), height=dp(150))
-                b.on_press = partial(self.video_button_press, video)
-                self.add_widget(b)
-                i += 1
-            if i == 0:
-                self.list_loaded = False
-            else:
-                self.list_loaded = True
+        self.has_connection = True
 
     def video_button_press(self, video_title):
         self.check_video_exists()
@@ -171,6 +182,8 @@ class VideoButtons(StackLayout):
             self.parent.parent.manager.current = 'video'
             global previous_screen
             previous_screen = 'video'
+        else:
+            pass
 
     def check_video_exists(self):
         if os.path.isfile('test.mp4'):
@@ -188,9 +201,8 @@ class VideoButtons(StackLayout):
 
     def download_video(self, video_title):
         yt = YouTube(video_dict[video_title])
-        stream = yt.streams.filter(res='360p').first()
+        stream = yt.streams.filter(res='720p').first()
         stream.download(filename='test.mp4')
-        print("Video Downloaded")
 
 
 class NoNetScreen(Screen):
@@ -201,22 +213,23 @@ class NoNetScreen(Screen):
 
 
 class VideoScreen(Screen):
-    my_source = StringProperty('')
-    removable = ''
-    video_loaded = BooleanProperty(False)
 
-    def on_load_video_press(self):
-        self.my_source = 'test.mp4'
-        self.video_loaded = True
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.removable = ''
+
+    def load_video(self):
+        self.ids.video.source = 'test.mp4'
+        self.ids.back_button.disabled = False
 
     def on_back_to_videos_button_press(self):
-        self.manager.current = 'links'
         global previous_screen
-        previous_screen = 'links'
-        self.removable = self.my_source
-        self.my_source = ''
+        self.manager.current = previous_screen
+        self.removable = self.ids.video.source
+        self.ids.video.source = ''
+        self.ids.video.state = 'stop'
         self.delete_previous_video()
-        self.video_loaded = False
+        self.ids.back_button.disabled = True
 
     def delete_previous_video(self):
         if os.path.isfile(self.removable):
@@ -311,6 +324,7 @@ class WorkoutEditor(Screen):
 class WorkoutTemplate(Screen):
     days_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5,
                  'Saturday': 6, 'Sunday': 7}
+    has_connection = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -332,6 +346,10 @@ class WorkoutTemplate(Screen):
         self.ids.custom_desc.text = 'Customisable workout description.'
         self.workout_id = 0
         self.ids.workout_types_selected.text = 'Selected Workout types: '
+        self.ids.examples.text = 'Examples'
+        self.examples_values = []
+        self.examples_dict = {}
+        self.added_example_types = set()
 
     def spinner_clicked(self, value):
         if value not in self.selected_types:
@@ -339,6 +357,8 @@ class WorkoutTemplate(Screen):
             self.label_text += value+', '
 
         self.ids.workout_types_selected.text = self.label_text
+        self.check_examples_disability()
+        self.examples_values_check_and_fill()
 
     def on_save_workout_button_press(self):
         global workouts
@@ -374,7 +394,9 @@ class WorkoutTemplate(Screen):
             workout_buttons[self.workout_index].size_hint = (1/7, (0.8/24)*self.time_difference)
             workout_buttons[self.workout_index].pos_hint = {"right": 1/7*self.workout_day,
                                                             "top": (1-(.8/24)*(self.start_time-1))}
-
+        self.examples_values = []
+        for value in self.ids.examples.values:
+            self.examples_values.append(value)
         self.ids.delete_button.disabled = False
         if os.path.isfile("save.dat"):
             os.remove("save.dat")
@@ -411,10 +433,18 @@ class WorkoutTemplate(Screen):
 
     def on_temp_leave(self):
         global workouts
+        global previous_screen
         if self.name == 'temp':
             self.name = str(self.workout_id)
+            previous_screen = self.name
         else:
             pass
+
+    def on_enter(self, *args):
+        for child in self.manager.children:
+            if isinstance(child, ExampleVideo):
+                self.manager.remove_widget(child)
+                del child
 
     def on_workout_button_click(self):
         global previous_screen
@@ -429,6 +459,91 @@ class WorkoutTemplate(Screen):
                 length = len(self.label_text)
                 self.label_text = self.label_text[:length-1]
             self.ids.workout_types_selected.text = self.label_text
+            self.check_examples_disability()
+            self.examples_values_check_and_fill()
+
+    def check_examples_disability(self):
+        if len(self.selected_types) > 0:
+            self.ids.examples.disabled = False
+        else:
+            self.ids.examples.disabled = True
+
+    def examples_values_check_and_fill(self):
+        if len(self.ids.examples.values) <= 0:
+            self.check_internet_connection()
+            if self.has_connection:
+                self.sql_load()
+        else:
+            pop_able_keys = []
+            for key in self.examples_dict:
+                if self.examples_dict[key][1] not in self.selected_types:
+                    if self.examples_dict[key][1] in self.added_example_types:
+                        self.added_example_types.remove(self.examples_dict[key][1])
+                    else:
+                        pass
+                    pop_able_keys.append(key)
+                else:
+                    pass
+            for key in pop_able_keys:
+                self.examples_dict.pop(key)
+                self.ids.examples.values.remove(key)
+            self.check_internet_connection()
+            if self.has_connection and len(self.ids.examples.values) > 0 and len(pop_able_keys) <= 0:
+                self.sql_load()
+            else:
+                pass
+
+    def sql_formatting(self):
+        result = ""
+        i = 0
+        for type in self.selected_types:
+            if i == 0:
+                if type not in self.added_example_types:
+                    result += "styles='"+type+"'"
+                    self.added_example_types.add(type)
+                    i += 1
+                else:
+                    pass
+            else:
+                if type not in self.added_example_types:
+                    result += " OR styles='"+type+"'"
+                    self.added_example_types.add(type)
+                else:
+                    pass
+        return result
+
+    def sql_load(self):
+        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                       passwd='IPt9fRRDYS')
+        mycursor = mydb.cursor()
+        mycursor.execute("Select links, titles, styles From sql11434313.Videos Where " + self.sql_formatting())
+        myresult = mycursor.fetchall()
+
+        for row in myresult:
+            data_list = [row[0], row[2]]
+            self.examples_dict[row[1]] = data_list
+            self.ids.examples.values.append(row[1])
+
+    def example_selected(self, value):
+        self.check_internet_connection()
+        if self.has_connection and not value == 'Examples':
+            self.download_video(value)
+            video_viewer = ExampleVideo(name='example_temp')
+            self.manager.add_widget(video_viewer)
+            self.manager.current = 'example_temp'
+
+    def download_video(self, video_title):
+        yt = YouTube(self.examples_dict[video_title][0])
+        stream = yt.streams.filter(res='720p').first()
+        stream.download(filename='test.mp4')
+
+    def check_internet_connection(self):
+        try:
+            request = requests.get('https://www.youtube.com/', timeout=5)
+            self.has_connection = True
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            self.has_connection = False
+            self.manager.current = 'net'
 
     def starting_time_selected(self, value):
         worked = True
@@ -466,6 +581,28 @@ class WorkoutTemplate(Screen):
             pass
 
 
+class ExampleVideo(VideoScreen):
+
+    def create_display(self):
+        for child in self.children:
+            if isinstance(child, BoxLayout):
+                box = child
+                video = VideoPlayer(id='video', allow_stretch=True)
+                button = Button(id='back_button', text='Back to Editor', size_hint=(1, .2), disabled=True)
+                button.on_press = self.on_back_to_videos_button_press
+                box.add_widget(video)
+                box.add_widget(button)
+
+    def on_back_to_videos_button_press(self):
+        global previous_screen
+        self.manager.current = previous_screen
+        self.removable = self.ids.video.source
+        self.ids.video.source = ''
+        self.ids.video.state = 'stop'
+        self.delete_previous_video()
+        self.ids.back_button.disabled = True
+
+
 def save_workouts():
     global workout_ids
 
@@ -483,7 +620,11 @@ def save_workouts():
                         "ids.workout_day_text.text": workout.ids.workout_day_text.text,
                         "ids.workout_name_input.text": workout.ids.workout_name_input.text,
                         "ids.custom_desc.text": workout.ids.custom_desc.text,
-                        "ids.workout_types_selected.text": workout.ids.workout_types_selected.text}
+                        "ids.workout_types_selected.text": workout.ids.workout_types_selected.text,
+                        "ids.examples.text": workout.ids.examples.text,
+                        "examples_values": workout.examples_values,
+                        "examples_dict": workout.examples_dict,
+                        "added_example_types": workout.added_example_types}
         save_able_workouts.append(workout_dict)
 
     with open("save.dat", "wb") as f:
@@ -492,10 +633,10 @@ def save_workouts():
 
 
 class MenuTestApp(App):
-    # def __init__(self, **kwargs):
-        # super().__init__(**kwargs)
-        # Window.size = (540, 1200)
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.size = (540, 1200)
+    # pass
 
 
 MenuTestApp().run()

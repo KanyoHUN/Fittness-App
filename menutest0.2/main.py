@@ -108,9 +108,10 @@ class MenuScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            request = requests.get('https://www.youtube.com/', timeout=5)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
-        except (requests.ConnectionError, requests.Timeout) as exception:
+        except:
             self.has_connection = False
             self.manager.current = 'net'
 
@@ -539,9 +540,10 @@ class WorkoutTemplate(Screen):
 
     def check_internet_connection(self):
         try:
-            request = requests.get('https://www.youtube.com/', timeout=5)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
-        except (requests.ConnectionError, requests.Timeout) as exception:
+        except:
             self.has_connection = False
             self.manager.current = 'net'
 

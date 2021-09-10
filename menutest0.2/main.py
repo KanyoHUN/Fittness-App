@@ -225,7 +225,8 @@ class VideoScreen(Screen):
 
     def on_back_to_videos_button_press(self):
         global previous_screen
-        self.manager.current = previous_screen
+        self.manager.current = 'links'
+        previous_screen = 'links'
         self.removable = self.ids.video.source
         self.ids.video.source = ''
         self.ids.video.state = 'stop'

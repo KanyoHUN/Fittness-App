@@ -42,6 +42,9 @@ ScreenManager1:
             size_hint: .1, .05
             on_press: app.stop()
 
+<ActivityOption@SpinnerOption>:
+    font_size: 20
+
 <UserDataScreen>:
     id: UserDataScreen
     Label:
@@ -104,9 +107,11 @@ ScreenManager1:
     Spinner:
         id: activity
         text: ''
+        option_cls: "ActivityOption"
         values: ["Sedentary(little or no exercise, desk job)", "Lightly active(light exercise/ sports 1-3 days/week)", "Moderately active(moderate exercise/ sports 6-7 days/week)", "Very active(hard exercise every day, or exercising 2 xs/day)", "Extra active(hard exercise 2 or more times per day)"]
         pos_hint: {"right": 1, "center_y": .45}
         size_hint: .75, .05
+        font_size : 20
     Label:
         text: 'Goal:'
         pos_hint: {"right": .45, "top": .4}

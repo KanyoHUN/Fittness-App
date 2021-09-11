@@ -208,6 +208,9 @@ class UserDataScreen(Screen):
         self.ids.goal.text = user.goal
         self.print_results()
 
+    def on_leave(self, *args):
+        self.ids.results.text = ''
+
     def on_calculate_button_press(self):
         if self.check_all_inputs():
             self.body_mass = self.ids.body_mass.text

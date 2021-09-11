@@ -115,7 +115,7 @@ class MenuScreen(Screen):
                     w.ids.custom_desc.text = workout_d["ids.custom_desc.text"]
                     w.ids.workout_types_selected.text = workout_d["ids.workout_types_selected.text"]
                     w.ids.delete_button.disabled = False
-                    w.ids.examples.text = workout_d["ids.examples.text"]
+                    w.ids.examples.text = "Examples"
                     w.examples_values = workout_d["examples_values"]
                     w.ids.examples.values = w.examples_values
                     w.examples_dict = workout_d["examples_dict"]
@@ -789,7 +789,6 @@ def save_workouts():
                         "ids.workout_name_input.text": workout.ids.workout_name_input.text,
                         "ids.custom_desc.text": workout.ids.custom_desc.text,
                         "ids.workout_types_selected.text": workout.ids.workout_types_selected.text,
-                        "ids.examples.text": workout.ids.examples.text,
                         "examples_values": workout.examples_values,
                         "examples_dict": workout.examples_dict,
                         "added_example_types": workout.added_example_types}

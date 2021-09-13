@@ -41,6 +41,7 @@ class User:
         self.activity = 'Level of Activity'
         self.goal = 'Training Goal'
         self.macros = {"Calories": 0, "Carbs": 0, "Fats": 0, "Proteins": 0}
+        self.macros_used = {"Calories": 0, "Carbs": 0, "Fats": 0, "Proteins": 0}
         load_user_data(self)
 
 
@@ -53,6 +54,7 @@ def save_user_data(user_object):
         pickle.dump(user_object.activity, save)
         pickle.dump(user_object.goal, save)
         pickle.dump(user_object.macros, save)
+        pickle.dump(user_object.macros_used, save)
 
 
 def load_user_data(user_object):
@@ -65,6 +67,7 @@ def load_user_data(user_object):
             user_object.activity = pickle.load(save)
             user_object.goal = pickle.load(save)
             user_object.macros = pickle.load(save)
+            user_object.macros_used = pickle.load(save)
     else:
         pass
 
@@ -80,6 +83,125 @@ class MenuScreen(Screen):
     has_connection = True
     workouts_loaded = False
     load_able_workouts = []
+    calorie_displayed = ''
+    carb_displayed = ''
+    fat_displayed = ''
+    protein_displayed = ''
+    created = False
+
+    def on_pre_enter(self, *args):
+        self.calorie_displayed = str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
+        self.carb_displayed = "Carbs: " + str(user.macros_used["Carbs"]) + "g/" + str(user.macros["Carbs"]) + "g"
+        self.fat_displayed = "Fats: " + str(user.macros_used["Fats"]) + "g/" + str(user.macros["Fats"]) + "g"
+        self.protein_displayed = "Proteins: " + str(user.macros_used["Proteins"]) + "g/" + str(user.macros["Proteins"]) + "g"
+        if self.created:
+            self.print_labels()
+        else:
+            self.created = True
+
+    def print_labels(self):
+        self.ids.calorie_label.text = str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
+        self.ids.carb_label.text = "Carbs: " + str(user.macros_used["Carbs"]) + "g/" + str(user.macros["Carbs"]) + "g"
+        self.ids.fat_label.text = "Fats: " + str(user.macros_used["Fats"]) + "g/" + str(user.macros["Fats"]) + "g"
+        self.ids.protein_label.text = "Proteins: " + str(user.macros_used["Proteins"]) + "g/" + str(user.macros["Proteins"]) + "g"
+
+        if user.macros_used["Calories"] > user.macros["Calories"]:
+            self.ids.calorie_label.color = (1, 0, 0)
+        else:
+            self.ids.calorie_label.color = (1, 1, 1)
+        if user.macros_used["Carbs"] > user.macros["Carbs"]:
+            self.ids.carb_label.color = (1, 0, 0)
+        else:
+            self.ids.carb_label.color = (1, 1, 1)
+        if user.macros_used["Fats"] > user.macros["Fats"]:
+            self.ids.fat_label.color = (1, 0, 0)
+        else:
+            self.ids.fat_label.color = (1, 1, 1)
+        if user.macros_used["Proteins"] > user.macros["Proteins"]:
+            self.ids.protein_label.color = (1, 0, 0)
+        else:
+            self.ids.protein_label.color = (1, 1, 1)
+
+    def on_plus_button_press(self, box):
+        if box == self.ids.calorie:
+            try:
+                user.macros_used["Calories"] += float(self.ids.calorie_input.text)
+                self.print_labels()
+                save_user_data(user)
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.carb:
+            try:
+                user.macros_used["Carbs"] += float(self.ids.carb_input.text)
+                self.print_labels()
+                save_user_data(user)
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.fat:
+            try:
+                user.macros_used["Fats"] += float(self.ids.fat_input.text)
+                self.print_labels()
+                save_user_data(user)
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.protein:
+            try:
+                user.macros_used["Proteins"] += float(self.ids.protein_input.text)
+                self.print_labels()
+                save_user_data(user)
+            except:
+                self.manager.current = 'bad_input'
+        else:
+            pass
+
+    def on_minus_button_press(self, box):
+        if box == self.ids.calorie:
+            try:
+                if user.macros_used["Calories"] >= float(self.ids.calorie_input.text):
+                    user.macros_used["Calories"] -= float(self.ids.calorie_input.text)
+                    self.print_labels()
+                    save_user_data(user)
+                else:
+                    self.ids.calorie_input.text = "Too big number"
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.carb:
+            try:
+                if user.macros_used["Carbs"] >= float(self.ids.carb_input.text):
+                    user.macros_used["Carbs"] -= float(self.ids.carb_input.text)
+                    self.print_labels()
+                    save_user_data(user)
+                else:
+                    self.ids.carb_input.text = "Too big number"
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.fat:
+            try:
+                if user.macros_used["Fats"] >= float(self.ids.fat_input.text):
+                    user.macros_used["Fats"] -= float(self.ids.fat_input.text)
+                    self.print_labels()
+                    save_user_data(user)
+                else:
+                    self.ids.fat_input.text = "Too big number"
+            except:
+                self.manager.current = 'bad_input'
+        elif box == self.ids.protein:
+            try:
+                if user.macros_used["Proteins"] >= float(self.ids.protein_input.text):
+                    user.macros_used["Proteins"] -= float(self.ids.protein_input.text)
+                    self.print_labels()
+                    save_user_data(user)
+                else:
+                    self.ids.protein_input.text = "Too big number"
+            except:
+                self.manager.current = 'bad_input'
+        else:
+            pass
+
+    def on_reset_intake_button_press(self):
+        user.macros_used = {"Calories": 0, "Carbs": 0, "Fats": 0, "Proteins": 0}
+        self.print_labels()
+        save_user_data(user)
 
     def load_workouts(self):
         global workout_ids

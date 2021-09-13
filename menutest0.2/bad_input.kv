@@ -1,0 +1,14 @@
+
+
+<BadInputScreen>:
+    id: BadInputScreen
+    RelativeLayout:
+        Label:
+            text:'CANNOT CALCULATE! BAD INPUT!'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint: .5, .5
+        Button:
+            text: 'OK'
+            pos_hint: {"center_x": .5, "center_y": .45}
+            size_hint: .1, .05
+            on_press: root.change_screen_back()

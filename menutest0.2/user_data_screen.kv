@@ -1,0 +1,106 @@
+
+
+<ActivityOption@SpinnerOption>:
+    font_size: 20
+
+<UserDataScreen>:
+    id: UserDataScreen
+    Label:
+        text: 'Calorie Calculator'
+        pos_hint: {"center_x": .5, "top": 1}
+        size_hint: .8, .1
+        font_size: 60
+    Label:
+        text: 'Body mass:'
+        pos_hint: {"right": .45, "top": .9}
+        size_hint: .3, .1
+        font_size: 35
+    TextInput:
+        id: body_mass
+        text: ''
+        pos_hint: {"right": .9, "center_y": .85}
+        size_hint: .4, .025
+        multiline: False
+        on_text_validate: root.number_input_check(self)
+    Label:
+        text: 'Height:'
+        pos_hint: {"right": .45, "top": .8}
+        size_hint: .3, .1
+        font_size: 35
+    TextInput:
+        id: height
+        text: ''
+        pos_hint: {"right": .9, "center_y": .75}
+        size_hint: .4, .025
+        multiline: False
+        on_text_validate: root.number_input_check(self)
+    Label:
+        text: 'Age:'
+        pos_hint: {"right": .45, "top": .7}
+        size_hint: .3, .1
+        font_size: 35
+    TextInput:
+        id: age
+        text: ''
+        pos_hint: {"right": .9, "center_y": .65}
+        size_hint: .4, .025
+        multiline: False
+        on_text_validate: root.number_input_check(self)
+    Label:
+        text: 'Sex'
+        pos_hint: {"right": .45, "top": .6}
+        size_hint: .3, .1
+        font_size: 35
+    Spinner:
+        id: sex
+        text: ''
+        values: ["Male", "Female"]
+        pos_hint: {"right": .9, "center_y": .55}
+        size_hint: .4, .05
+    Label:
+        text: 'Activity level:'
+        pos_hint: {"right": .2, "top": .5}
+        size_hint: .15, .1
+        font_size: 20
+    Spinner:
+        id: activity
+        text: ''
+        option_cls: "ActivityOption"
+        values: ["Sedentary(little or no exercise, desk job)", "Lightly active(light exercise/ sports 1-3 days/week)", "Moderately active(moderate exercise/ sports 6-7 days/week)", "Very active(hard exercise every day, or exercising 2 xs/day)", "Extra active(hard exercise 2 or more times per day)"]
+        pos_hint: {"right": 1, "center_y": .45}
+        size_hint: .75, .05
+        font_size : 20
+    Label:
+        text: 'Goal:'
+        pos_hint: {"right": .45, "top": .4}
+        size_hint: .3, .1
+        font_size: 35
+    Spinner:
+        id: goal
+        text: ''
+        values: ["Maintain mass", "Mild mass loss", "Mass loss", "Extreme mass loss", "Mild mass gain", "Mass gain", "Fast mass gain"]
+        pos_hint: {"right": .9, "center_y": .35}
+        size_hint: .4, .05
+    Label:
+        id: results
+        text: 'Results: '
+        pos_hint: {"center_x": .5, "top": .3}
+        size_hint: .3, .1
+        font_size: 18
+    Button:
+        text: 'Calculate'
+        pos_hint: {"center_x": .5, "top": .17}
+        size_hint: .5, .05
+        on_press: root.on_calculate_button_press()
+    Button:
+        id: save_button
+        text: 'Back and Save'
+        pos_hint: {"right": .45, "top": .1}
+        size_hint: .4, .05
+        disabled: True
+        on_press: root.on_back_and_save_button_press()
+    Button:
+        text: 'Back Without Saving'
+        pos_hint: {"right": .95, "top": .1}
+        size_hint: .4, .05
+        on_press: root.on_back_without_saving_button_press()

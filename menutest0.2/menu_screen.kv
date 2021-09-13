@@ -1,0 +1,128 @@
+
+
+<MenuScreen>:
+    id: MenuScreen
+    on_pre_leave: root.load_workouts()
+    RelativeLayout:
+        Label:
+            id: calorie_label
+            text: root.calorie_displayed
+            size_hint: .3, .1
+            pos_hint: {"center_x": .5, "top": .9}
+            font_size: 35
+        TextInput:
+            id: calorie_input
+            text: ''
+            size_hint: .3, .03
+            pos_hint: {"center_x": .5, "top": .83}
+            multiline: False
+        BoxLayout:
+            id: calorie
+            orientation: "horizontal"
+            size_hint: .3, .02
+            pos_hint: {"center_x": .5, "top": .8}
+            Button:
+                text: "+"
+                on_press: root.on_plus_button_press(self.parent)
+            Button:
+                text: "-"
+                on_press: root.on_minus_button_press(self.parent)
+        Label:
+            id: carb_label
+            text: root.carb_displayed
+            size_hint: .3, .1
+            pos_hint: {"center_x": .2, "top": .75}
+            font_size: 25
+        TextInput:
+            id: carb_input
+            text: ''
+            size_hint: .3, .03
+            pos_hint: {"center_x": .2, "top": .68}
+            multiline: False
+        BoxLayout:
+            id: carb
+            orientation: "horizontal"
+            size_hint: .3, .02
+            pos_hint: {"center_x": .2, "top": .65}
+            Button:
+                text: "+"
+                on_press: root.on_plus_button_press(self.parent)
+            Button:
+                text: "-"
+                on_press: root.on_minus_button_press(self.parent)
+        Label:
+            id: fat_label
+            text: root.fat_displayed
+            size_hint: .3, .1
+            pos_hint: {"center_x": .8, "top": .75}
+            font_size: 25
+        TextInput:
+            id: fat_input
+            text: ''
+            size_hint: .3, .03
+            pos_hint: {"center_x": .8, "top": .68}
+            multiline: False
+        BoxLayout:
+            id: fat
+            orientation: "horizontal"
+            size_hint: .3, .02
+            pos_hint: {"center_x": .8, "top": .65}
+            Button:
+                text: "+"
+                on_press: root.on_plus_button_press(self.parent)
+            Button:
+                text: "-"
+                on_press: root.on_minus_button_press(self.parent)
+        Label:
+            id: protein_label
+            text: root.protein_displayed
+            size_hint: .3, .1
+            pos_hint: {"center_x": .5, "top": .63}
+            font_size: 25
+        TextInput:
+            id: protein_input
+            text: ''
+            size_hint: .3, .03
+            pos_hint: {"center_x": .5, "top": .56}
+            multiline: False
+        BoxLayout:
+            id: protein
+            orientation: "horizontal"
+            size_hint: .3, .02
+            pos_hint: {"center_x": .5, "top": .53}
+            Button:
+                text: "+"
+                on_press: root.on_plus_button_press(self.parent)
+            Button:
+                text: "-"
+                on_press: root.on_minus_button_press(self.parent)
+        Button:
+            text: 'Reset Intake'
+            pos_hint: {"center_x": .5, "top": .45}
+            size_hint: .2, .05
+            on_press: root.on_reset_intake_button_press()
+        Button:
+            text: 'Video Links'
+            pos_hint: {"right": .4, "top": .1}
+            size_hint: .2, .1
+            on_press: root.on_video_links_button_press()
+        Button:
+            text: 'Workout Editor'
+            pos_hint: {"right": .6, "top": .1}
+            size_hint: .2, .1
+            on_press: root.on_workout_editor_button_press()
+        Button:
+            text: 'Calorie Calculator'
+            pos_hint: {"right": .2, "top": .1}
+            size_hint: .2, .1
+            on_press: root.on_calorie_calculator_button_press()
+        Button:
+            text: 'Nutriments'
+            pos_hint: {"right": .8, "top": .1}
+            size_hint: .2, .1
+            disabled: True
+        Button:
+            text: 'Daily meal plan'
+            pos_hint: {"right": 1, "top": .1}
+            size_hint: .2, .1
+            disabled: True

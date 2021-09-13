@@ -1,0 +1,32 @@
+
+
+<LinkListScreen>:
+    id:LinkListScreen
+    on_pre_enter: root.load_video_list()
+    ScrollView:
+        VideoButtons:
+            padding: ("20dp", "20dp", "20dp", "20dp")
+            spacing: "20dp", "20dp"
+            Button:
+                text: 'Back To Menu'
+                size_hint: 1, None
+                height: dp(150)
+                on_press: root.back_to_menu_button_press()
+
+<VideoButtons>:
+
+
+<VideoScreen>:
+    id: VideoScreen
+    on_pre_enter: root.load_video()
+    BoxLayout:
+        orientation: "vertical"
+        VideoPlayer:
+            id: video
+            allow_stretch: True
+        Button:
+            id: back_button
+            text: 'Back To Videos'
+            size_hint: 1, .2
+            disabled: True
+            on_press: root.on_back_to_videos_button_press()

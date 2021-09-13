@@ -1,0 +1,90 @@
+
+
+<WorkoutTemplate>:
+    on_leave: root.on_temp_leave()
+    Label:
+        text: 'Workout Name:'
+        font_size: 25
+        pos_hint: {"center_x": .25, "center_y": .9}
+    TextInput:
+        id: workout_name_input
+        text: ''
+        multiline: False
+        size_hint: .4, .05
+        pos_hint: {"center_x": .7, "center_y": .9}
+    Label:
+        id: workout_types_selected
+        text: ''
+        font_size: 20
+        pos_hint: {"center_x": .5, "center_y": .85}
+
+    Spinner:
+        text: "Add Workout Type"
+        values: ['Pull', 'Push', 'Leg', 'Core', 'Cardio']
+        pos_hint: {"center_x": .25, "center_y": .8}
+        size_hint: .4, .05
+
+        on_text: root.spinner_clicked(self.text)
+    Button:
+        text: "Remove last"
+        pos_hint : {"center_x": .7, "center_y": .8}
+        size_hint : .4, .05
+        on_press: root.on_remove_last_button_press()
+    Spinner:
+        id: start_time_spinner
+        text: ''
+        values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+        pos_hint: {"center_x": .25, "center_y": .7}
+        size_hint: .4, .05
+
+        on_text: root.starting_time_selected(self.text)
+    Spinner:
+        id: end_time_spinner
+        text: ''
+        values: []
+        pos_hint: {"center_x": .7, "center_y": .7}
+        size_hint: .4, .05
+        disabled: True
+
+        on_text: root.end_time_selected(self.text)
+    Spinner:
+        id: workout_day_text
+        text: ''
+        values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        pos_hint: {"center_x": .25, "center_y": .6}
+        size_hint: .4, .05
+
+        on_text: root.day_selected(self.text)
+    Spinner:
+        id: examples
+        text: ''
+        values: []
+        pos_hint: {"center_x": .7, "center_y": .6}
+        size_hint: .4, .05
+        disabled: True
+
+        on_text: root.example_selected(self.text)
+    TextInput:
+        id: custom_desc
+        text: ''
+        size_hint: .8, .4
+        pos_hint: {"center_x": .5, "center_y": .35}
+    Button:
+        id: save_button
+        text: "Save Workout"
+        size_hint: .3, .05
+        pos_hint: {"center_x": .3, "center_y": .12}
+        on_press: root.on_save_workout_button_press()
+        disabled: True
+    Button:
+        id: delete_button
+        text: 'Delete Workout'
+        size_hint: .3, .05
+        pos_hint: {"center_x": .7, "center_y": .12}
+        on_press: root.on_delete_workout_button_press()
+        disabled : True
+    Button:
+        text: 'Back Without Saving'
+        size_hint: .4, .05
+        pos_hint: {"center_x": .5, "center_y": .06}
+        on_press: root.on_back_without_saving_button_press()

@@ -16,6 +16,8 @@ from workout_template_screen import WorkoutTemplate
 from workout_editor_screen import WorkoutEditor
 from menu_screen import MenuScreen
 
+# All imports above are needed for Application to run!!!
+
 os.environ['SSL_CERT_FILE'] = certifi.where()  # needed to access internet on android
 
 

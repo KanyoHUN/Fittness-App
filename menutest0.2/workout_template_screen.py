@@ -68,6 +68,7 @@ class WorkoutTemplate(Screen):
             self.time_difference = t_diff
             button = Button(text=self.workout_name, font_size=25, size_hint=(1/7, (0.8/24)*self.time_difference),
                             pos_hint={"right": 1/7*self.workout_day, "top": (1-(.8/24)*(self.start_time-1))})
+            # Here only modify color or texture do not modify size pos etc.
             button.on_press = self.on_workout_button_click
             config.workout_buttons.append(button)
         else:

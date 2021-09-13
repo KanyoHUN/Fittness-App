@@ -24,6 +24,8 @@ class LinkListScreen(Screen):
                             i = 0
                             for video in config.video_dict.keys():
                                 b = Button(text=video, size_hint=(1, None), height=dp(150))
+                                # Can modify the above to make GUI better. Do not modify: text, or on_press
+                                # To modify size ask Csaba first
                                 b.on_press = partial(child.video_button_press, video)
                                 child.add_widget(b)
                                 i += 1

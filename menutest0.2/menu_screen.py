@@ -29,7 +29,7 @@ class MenuScreen(Screen):
         else:
             self.created = True
 
-    def print_labels(self):
+    def print_labels(self):  # Can be tinkered with in order to make GUI better!
         self.ids.calorie_label.text = str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
         self.ids.carb_label.text = "Carbs: " + str(user.macros_used["Carbs"]) + "g/" + str(user.macros["Carbs"]) + "g"
         self.ids.fat_label.text = "Fats: " + str(user.macros_used["Fats"]) + "g/" + str(user.macros["Fats"]) + "g"

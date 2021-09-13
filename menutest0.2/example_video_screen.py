@@ -13,7 +13,8 @@ class ExampleVideo(VideoScreen):
                 box = child
                 video = VideoPlayer(id='video', allow_stretch=True)
                 button = Button(id='back_button', text='Back to Editor', size_hint=(1, .2), disabled=True)
-                button.on_press = self.on_back_to_videos_button_press
+                # Customizable button above. Do not change id,text or disabled !!!!
+                button.on_press = self.on_back_to_videos_button_press  # Do not change this line!
                 box.add_widget(video)
                 box.add_widget(button)
 

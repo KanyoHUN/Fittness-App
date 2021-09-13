@@ -10,6 +10,7 @@ from workout_template_screen import WorkoutTemplate
 class WorkoutEditor(Screen):
 
     class Display1(FloatLayout):
+        # In this class the workout editor table is created to modify the lines checkout functions
         vertical_lines = []
         horizontal_lines = []
 

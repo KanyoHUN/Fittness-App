@@ -219,3 +219,7 @@ class MenuScreen(Screen):
     def on_calorie_calculator_button_press(self):
         self.manager.current = 'input'
         config.previous_screen = 'input'
+
+    def on_nutriments_button_press(self):
+        self.manager.current = 'search'
+        config.previous_screen = 'search'

@@ -102,7 +102,7 @@
             size_hint: .2, .05
             on_press: root.on_reset_intake_button_press()
         Button:
-            text: 'Video Links'
+            text: 'Tutorials'
             pos_hint: {"right": .4, "top": .1}
             size_hint: .2, .1
             on_press: root.on_video_links_button_press()
@@ -120,7 +120,7 @@
             text: 'Nutriments'
             pos_hint: {"right": .8, "top": .1}
             size_hint: .2, .1
-            disabled: True
+            on_press: root.on_nutriments_button_press()
         Button:
             text: 'Daily meal plan'
             pos_hint: {"right": 1, "top": .1}

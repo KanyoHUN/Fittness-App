@@ -1,0 +1,79 @@
+
+
+<SearchScreen>:
+    id: SearchScreen
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            id: searcher
+            text: "Enter food name"
+            multiline: False
+            size_hint: .5, .05
+            pos_hint: {'center_x': .5}
+        Button:
+            text: "Search"
+            size_hint: .45, .05
+            pos_hint: {'center_x': .5}
+            on_press: root.on_search_button_press()
+        ScrollView:
+            RecipeButtons:
+                padding: ("20dp", "20dp", "20dp", "20dp")
+                spacing: "20dp", "20dp"
+                Button:
+                    text: 'Back To Menu'
+                    size_hint: 1, None
+                    height: dp(150)
+                    on_press: root.back_to_menu_button_press()
+
+<RecipeView>:
+    id: RecipeView
+    Label:
+        id:food_name
+        text: ''
+        size_hint: .6, .2
+        font_size: 30
+        pos_hint: {"center_x": .5, "top": 1}
+    Label:
+        id:food_macros
+        text: ''
+        size_hint: .6, .2
+        font_size: 20
+        pos_hint: {"center_x": .5, "top": .95}
+    TextInput:
+        id:grams_input
+        text: ''
+        multiline: False
+        size_hint: .2, .03
+        pos_hint: {"right": .3, "top":.83}
+    Label:
+        text: 'g'
+        size_hint: .1, .03
+        pos_hint:{"right": .36, "top":.83}
+    Button:
+        text: 'Calculate'
+        size_hint: .2, .03
+        pos_hint: {"right": .3, "top":.8}
+        on_press: root.on_calculate_button_press()
+    Label:
+        id:results
+        text: ''
+        size_hint: .6, .2
+        font_size: 15
+        pos_hint: {"center_x": .5, "top": .83}
+    Button:
+        id:add_button
+        text: 'Add to Intake'
+        size_hint: .5, .05
+        pos_hint: {"center_x": .5, "top":.7}
+        disabled: True
+        on_press: root.on_add_to_intake_button_press()
+    Label:
+        id:user_data_display
+        text: ''
+        size_hint: .5, .05
+        pos_hint: {"center_x": .5, "top":.6}
+    Button:
+        text: 'Back To Searching'
+        size_hint: 1, .1
+        pos_hint: {"center_x": .5, "top":.1}
+        on_press: root.on_back_to_searching_button_press()

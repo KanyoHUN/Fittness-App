@@ -15,6 +15,7 @@ from example_video_screen import ExampleVideo
 from workout_template_screen import WorkoutTemplate
 from workout_editor_screen import WorkoutEditor
 from menu_screen import MenuScreen
+from search import SearchScreen, RecipeView, RecipeButtons
 
 # All imports above are needed for Application to run!!!
 

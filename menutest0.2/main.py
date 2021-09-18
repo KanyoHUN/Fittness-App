@@ -16,8 +16,10 @@ from workout_template_screen import WorkoutTemplate
 from workout_editor_screen import WorkoutEditor
 from menu_screen import MenuScreen
 from search import SearchScreen, RecipeView, RecipeButtons
+from recipes import RecipeListScreen, HealthyRecipeView
 
 # All imports above are needed for Application to run!!!
+# IMPORTANT: DO NOT CHANGE ANY ID IN KV FILES!!!!! IT WILL BREAK THE CODE FOR SURE!!!!
 
 os.environ['SSL_CERT_FILE'] = certifi.where()  # needed to access internet on android
 

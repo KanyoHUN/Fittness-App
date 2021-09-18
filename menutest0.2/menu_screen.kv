@@ -112,7 +112,7 @@
             size_hint: .2, .1
             on_press: root.on_workout_editor_button_press()
         Button:
-            text: 'Calorie Calculator'
+            text: 'Nutrition plan'
             pos_hint: {"right": .2, "top": .1}
             size_hint: .2, .1
             on_press: root.on_calorie_calculator_button_press()
@@ -122,7 +122,7 @@
             size_hint: .2, .1
             on_press: root.on_nutriments_button_press()
         Button:
-            text: 'Daily meal plan'
+            text: 'Healthy Recipes'
             pos_hint: {"right": 1, "top": .1}
             size_hint: .2, .1
-            disabled: True
+            on_press: root.on_healthy_recipes_button_press()

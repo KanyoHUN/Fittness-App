@@ -1,4 +1,10 @@
+#:include recipes.kv
+#Some healthy foods with recipes. Same as search basically but has an added recipe displayed.
+#The recipe in the database has to be one line with /n where you want to have an end of line
+#For reasons ask Csaba!
+
 #:include search.kv
+#Searcher screen for searching in food macronutrients data in database
 
 #:include nonet.kv
 #Screen what is displayed when app has no access to internet
@@ -42,3 +48,5 @@ ScreenManager1:
         name: 'bad_input'
     SearchScreen:
         name: 'search'
+    RecipeListScreen:
+        name: 'healthy'

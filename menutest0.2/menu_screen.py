@@ -55,28 +55,40 @@ class MenuScreen(Screen):
     def on_plus_button_press(self, box):
         if box == self.ids.calorie:
             try:
-                user.macros_used["Calories"] += float(self.ids.calorie_input.text)
+                if float(self.ids.calorie_input.text) > 0:
+                    user.macros_used["Calories"] += float(self.ids.calorie_input.text)
+                else:
+                    i = 100/0
                 self.print_labels()
                 save_user_data(user)
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.carb:
             try:
-                user.macros_used["Carbs"] += float(self.ids.carb_input.text)
+                if float(self.ids.carb_input.text) > 0:
+                    user.macros_used["Carbs"] += float(self.ids.carb_input.text)
+                else:
+                    i = 100/0
                 self.print_labels()
                 save_user_data(user)
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.fat:
             try:
-                user.macros_used["Fats"] += float(self.ids.fat_input.text)
+                if float(self.ids.fat_input.text) > 0:
+                    user.macros_used["Fats"] += float(self.ids.fat_input.text)
+                else:
+                    i = 100/0
                 self.print_labels()
                 save_user_data(user)
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.protein:
             try:
-                user.macros_used["Proteins"] += float(self.ids.protein_input.text)
+                if float(self.ids.protein_input.text) > 0:
+                    user.macros_used["Proteins"] += float(self.ids.protein_input.text)
+                else:
+                    i = 100/0
                 self.print_labels()
                 save_user_data(user)
             except:
@@ -87,42 +99,54 @@ class MenuScreen(Screen):
     def on_minus_button_press(self, box):
         if box == self.ids.calorie:
             try:
-                if user.macros_used["Calories"] >= float(self.ids.calorie_input.text):
-                    user.macros_used["Calories"] -= float(self.ids.calorie_input.text)
-                    self.print_labels()
-                    save_user_data(user)
+                if float(self.ids.calorie_input.text) > 0:
+                    if user.macros_used["Calories"] >= float(self.ids.calorie_input.text):
+                        user.macros_used["Calories"] -= float(self.ids.calorie_input.text)
+                        self.print_labels()
+                        save_user_data(user)
+                    else:
+                        self.ids.calorie_input.text = "Too big number"
                 else:
-                    self.ids.calorie_input.text = "Too big number"
+                    i = 100/0
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.carb:
             try:
-                if user.macros_used["Carbs"] >= float(self.ids.carb_input.text):
-                    user.macros_used["Carbs"] -= float(self.ids.carb_input.text)
-                    self.print_labels()
-                    save_user_data(user)
+                if float(self.ids.carb_input.text) > 0:
+                    if user.macros_used["Carbs"] >= float(self.ids.carb_input.text):
+                        user.macros_used["Carbs"] -= float(self.ids.carb_input.text)
+                        self.print_labels()
+                        save_user_data(user)
+                    else:
+                        self.ids.carb_input.text = "Too big number"
                 else:
-                    self.ids.carb_input.text = "Too big number"
+                    i = 100/0
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.fat:
             try:
-                if user.macros_used["Fats"] >= float(self.ids.fat_input.text):
-                    user.macros_used["Fats"] -= float(self.ids.fat_input.text)
-                    self.print_labels()
-                    save_user_data(user)
+                if float(self.ids.fat_input.text) > 0:
+                    if user.macros_used["Fats"] >= float(self.ids.fat_input.text):
+                        user.macros_used["Fats"] -= float(self.ids.fat_input.text)
+                        self.print_labels()
+                        save_user_data(user)
+                    else:
+                        self.ids.fat_input.text = "Too big number"
                 else:
-                    self.ids.fat_input.text = "Too big number"
+                    i = 100/0
             except:
                 self.manager.current = 'bad_input'
         elif box == self.ids.protein:
             try:
-                if user.macros_used["Proteins"] >= float(self.ids.protein_input.text):
-                    user.macros_used["Proteins"] -= float(self.ids.protein_input.text)
-                    self.print_labels()
-                    save_user_data(user)
+                if float(self.ids.protein_input.text) > 0:
+                    if user.macros_used["Proteins"] >= float(self.ids.protein_input.text):
+                        user.macros_used["Proteins"] -= float(self.ids.protein_input.text)
+                        self.print_labels()
+                        save_user_data(user)
+                    else:
+                        self.ids.protein_input.text = "Too big number"
                 else:
-                    self.ids.protein_input.text = "Too big number"
+                    i = 100/0
             except:
                 self.manager.current = 'bad_input'
         else:
@@ -223,3 +247,7 @@ class MenuScreen(Screen):
     def on_nutriments_button_press(self):
         self.manager.current = 'search'
         config.previous_screen = 'search'
+
+    def on_healthy_recipes_button_press(self):
+        self.manager.current = 'healthy'
+        config.previous_screen = 'healthy'

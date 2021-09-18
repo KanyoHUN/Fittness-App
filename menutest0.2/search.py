@@ -33,10 +33,11 @@ class SearchScreen(Screen):
     recipe_dict = {}
     screen_added = False
     result_macros = []
+    recipe_name = 'recipe'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.recipe = RecipeView(name='recipe')
+        self.recipe = RecipeView(name=self.recipe_name)
 
     def on_search_button_press(self):
         self.check_internet_connection()
@@ -94,11 +95,12 @@ class SearchScreen(Screen):
 
     def create_buttons(self):
         for key in self.recipe_dict:
-            b = Button(text=key, size_hint=(1, None), height=dp(150))
+            b = Button(text=key, size_hint=(1, None), height=dp(150))  # Do not touch text,height or size_hint!
+            # But can add more specification for UI customization
             b.on_press = partial(self.food_button_press, key)
             self.buttons.append(b)
         if not self.recipe_dict:
-            b = Button(text="No match found!", size_hint=(1, None), height=dp(150))
+            b = Button(text="No match found!", size_hint=(1, None), height=dp(150))  # Same here.
             self.buttons.append(b)
 
     def add_buttons(self):
@@ -131,8 +133,8 @@ class SearchScreen(Screen):
         self.recipe.on_calculate_button_press = self.on_calculate_button_press
         self.recipe.on_add_to_intake_button_press = self.on_add_to_intake_button_press
 
-        self.manager.current = 'recipe'
-        config.previous_screen = 'recipe'
+        self.manager.current = self.recipe_name
+        config.previous_screen = self.recipe_name
 
     def back_to_menu_button_press(self):
         self.manager.current = 'menu'
@@ -141,12 +143,15 @@ class SearchScreen(Screen):
     def on_calculate_button_press(self):
         try:
             multiplier = float(self.recipe.ids.grams_input.text)/100
+            i = 1
             for item in self.recipe_dict[self.recipe.current_food_name]:
-                self.result_macros.append(float('{:.2f}'.format(item*multiplier)))
-            self.recipe.ids.results.text = 'Results: Calories: ' + "{:.2f}".format(self.result_macros[0]) + \
-                'kcal, Fats: ' + "{:.2f}".format(self.result_macros[1]) + 'g, Carbs: ' \
-                + "{:.2f}".format(self.result_macros[2]) + 'g, Proteins:' + \
-                "{:.2f}".format(self.result_macros[3]) + 'g'
+                if i < 5:
+                    self.result_macros.append(float('{:.2f}'.format(item*multiplier)))
+                i += 1
+            self.recipe.ids.results.text = 'Results: Calories: ' + str(self.result_macros[0]) + \
+                'kcal, Fats: ' + str(self.result_macros[1]) + 'g, Carbs: ' \
+                + str(self.result_macros[2]) + 'g, Proteins:' + \
+                str(self.result_macros[3]) + 'g'
             self.recipe.ids.add_button.disabled = False
         except:
             self.manager.current = 'bad_input'
@@ -159,7 +164,7 @@ class SearchScreen(Screen):
         save_user_data(user)
         self.display_user_data()
 
-    def display_user_data(self):
+    def display_user_data(self):  # Here you can modify how you display the user's data but be careful!
         self.recipe.ids.user_data_display.text = 'Calories: ' + str(user.macros_used["Calories"]) + 'kcal/' \
             + str(user.macros["Calories"]) + 'kcal Fats: ' + str(user.macros_used["Fats"]) + 'g/' \
             + str(user.macros["Fats"]) + 'g Carbs: ' + str(user.macros_used["Carbs"]) + 'g/' \

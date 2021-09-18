@@ -1,0 +1,21 @@
+
+<RecipeListScreen>:
+    id: RecipeListScreen
+    ScrollView:
+        HealthyRecipeButtons:
+            padding: ("20dp", "20dp", "20dp", "20dp")
+            spacing: "20dp", "20dp"
+            Button:
+                text: 'Back To Menu'
+                size_hint: 1, None
+                height: dp(150)
+                on_press: root.on_back_to_menu_button_press()
+
+#The below class is inheriting from RecipeView in search.kv if wanting to modify modify there
+<HealthyRecipeView>:
+    Label:
+        id:recipe_text
+        text:''
+        size_hint: .8, .5
+        pos_hint: {"right": .9, "top": .55}
+        font_size: 15

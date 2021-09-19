@@ -142,6 +142,7 @@ class SearchScreen(Screen):
 
     def on_calculate_button_press(self):
         try:
+            self.result_macros = []
             multiplier = float(self.recipe.ids.grams_input.text)/100
             i = 1
             for item in self.recipe_dict[self.recipe.current_food_name]:

@@ -31,13 +31,13 @@
         id:food_name
         text: ''
         size_hint: .6, .2
-        font_size: 30
+        font_size: self.width * 0.1
         pos_hint: {"center_x": .5, "top": 1}
     Label:
         id:food_macros
         text: ''
         size_hint: .6, .2
-        font_size: 20
+        font_size: self.width * 0.05
         pos_hint: {"center_x": .5, "top": .95}
     TextInput:
         id:grams_input
@@ -48,23 +48,26 @@
     Label:
         text: 'g'
         size_hint: .1, .03
+        font_size: self.width * .4
         pos_hint:{"right": .36, "top":.83}
     Button:
         text: 'Calculate'
         size_hint: .2, .03
         pos_hint: {"right": .3, "top":.8}
+        font_size: self.width * .2
         on_press: root.on_calculate_button_press()
     Label:
         id:results
         text: ''
         size_hint: .6, .2
-        font_size: 15
+        font_size: self.width * 0.05
         pos_hint: {"center_x": .5, "top": .83}
     Button:
         id:add_button
         text: 'Add to Intake'
         size_hint: .5, .05
         pos_hint: {"center_x": .5, "top":.7}
+        font_size: self.width * 0.06
         disabled: True
         on_press: root.on_add_to_intake_button_press()
     Label:
@@ -72,9 +75,11 @@
         text: ''
         size_hint: .5, .05
         pos_hint: {"center_x": .5, "top":.6}
+        font_size: self.width * 0.05
     Button:
         id:Back
         text: 'Back To Searching'
         size_hint: 1, .1
         pos_hint: {"center_x": .5, "top":.1}
+        font_size: self.width * 0.05
         on_press: root.on_back_to_searching_button_press()

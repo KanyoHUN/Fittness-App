@@ -57,6 +57,7 @@ class MenuScreen(Screen):
             try:
                 if float(self.ids.calorie_input.text) > 0:
                     user.macros_used["Calories"] += float(self.ids.calorie_input.text)
+                    user.macros_used["Calories"] = float('{:.2f}'.format(user.macros_used["Calories"]))
                 else:
                     i = 100/0
                 self.print_labels()
@@ -67,6 +68,7 @@ class MenuScreen(Screen):
             try:
                 if float(self.ids.carb_input.text) > 0:
                     user.macros_used["Carbs"] += float(self.ids.carb_input.text)
+                    user.macros_used["Carbs"] = float('{:.2f}'.format(user.macros_used["Carbs"]))
                 else:
                     i = 100/0
                 self.print_labels()
@@ -77,6 +79,7 @@ class MenuScreen(Screen):
             try:
                 if float(self.ids.fat_input.text) > 0:
                     user.macros_used["Fats"] += float(self.ids.fat_input.text)
+                    user.macros_used["Fats"] = float('{:.2f}'.format(user.macros_used["Fats"]))
                 else:
                     i = 100/0
                 self.print_labels()
@@ -87,6 +90,7 @@ class MenuScreen(Screen):
             try:
                 if float(self.ids.protein_input.text) > 0:
                     user.macros_used["Proteins"] += float(self.ids.protein_input.text)
+                    user.macros_used["Proteins"] = float('{:.2f}'.format(user.macros_used["Proteins"]))
                 else:
                     i = 100/0
                 self.print_labels()
@@ -102,6 +106,7 @@ class MenuScreen(Screen):
                 if float(self.ids.calorie_input.text) > 0:
                     if user.macros_used["Calories"] >= float(self.ids.calorie_input.text):
                         user.macros_used["Calories"] -= float(self.ids.calorie_input.text)
+                        user.macros_used["Calories"] = float('{:.2f}'.format(user.macros_used["Calories"]))
                         self.print_labels()
                         save_user_data(user)
                     else:
@@ -115,6 +120,7 @@ class MenuScreen(Screen):
                 if float(self.ids.carb_input.text) > 0:
                     if user.macros_used["Carbs"] >= float(self.ids.carb_input.text):
                         user.macros_used["Carbs"] -= float(self.ids.carb_input.text)
+                        user.macros_used["Carbs"] = float('{:.2f}'.format(user.macros_used["Carbs"]))
                         self.print_labels()
                         save_user_data(user)
                     else:
@@ -128,6 +134,7 @@ class MenuScreen(Screen):
                 if float(self.ids.fat_input.text) > 0:
                     if user.macros_used["Fats"] >= float(self.ids.fat_input.text):
                         user.macros_used["Fats"] -= float(self.ids.fat_input.text)
+                        user.macros_used["Fats"] = float('{:.2f}'.format(user.macros_used["Fats"]))
                         self.print_labels()
                         save_user_data(user)
                     else:
@@ -141,6 +148,7 @@ class MenuScreen(Screen):
                 if float(self.ids.protein_input.text) > 0:
                     if user.macros_used["Proteins"] >= float(self.ids.protein_input.text):
                         user.macros_used["Proteins"] -= float(self.ids.protein_input.text)
+                        user.macros_used["Proteins"] = float('{:.2f}'.format(user.macros_used["Proteins"]))
                         self.print_labels()
                         save_user_data(user)
                     else:

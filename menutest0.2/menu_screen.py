@@ -204,7 +204,7 @@ class MenuScreen(Screen):
                     config.workouts.append(w)
 
                 for worko in config.workouts:
-                    b = Button(text=worko.workout_name, font_size=25, size_hint=(1 / 7, (0.8 / 24) * worko.time_difference),
+                    b = Button(text=worko.workout_name, font_size=1/7*self.width*0.16, size_hint=(1 / 7, (0.8 / 24) * worko.time_difference),
                                pos_hint={"right": 1 / 7 * worko.workout_day, "top": (1 - (.8 / 24) * (worko.start_time-1))})
                     b.on_press = worko.on_workout_button_click
                     config.workout_buttons.append(b)

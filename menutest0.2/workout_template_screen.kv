@@ -1,9 +1,20 @@
+<WorkoutTypeOption@SpinnerOption>:
+    font_size: self.height * 0.35
+
+<TimeSelectOption@SpinnerOption>:
+    font_size: self.height * 0.35
+
+<DaySelectOption@SpinnerOption>:
+    font_size: self.height * 0.35
+
+<ExampleOption@SpinnerOption>:
+    font_size: self.height * 0.25
 
 
 <WorkoutTemplate>:
     Label:
         text: 'Workout Name:'
-        font_size: 25
+        font_size: self.height * 0.02
         pos_hint: {"center_x": .25, "center_y": .9}
     TextInput:
         id: workout_name_input
@@ -14,53 +25,64 @@
     Label:
         id: workout_types_selected
         text: ''
-        font_size: 20
+        font_size: self.height * 0.015
         pos_hint: {"center_x": .5, "center_y": .85}
 
     Spinner:
         text: "Add Workout Type"
         values: ['Pull', 'Push', 'Leg', 'Core', 'Cardio']
+        option_cls: "WorkoutTypeOption"
         pos_hint: {"center_x": .25, "center_y": .8}
         size_hint: .4, .05
+        font_size: self.height * 0.25
 
         on_text: root.spinner_clicked(self.text)
     Button:
         text: "Remove last"
         pos_hint : {"center_x": .7, "center_y": .8}
         size_hint : .4, .05
+        font_size: self.height * 0.25
         on_press: root.on_remove_last_button_press()
     Spinner:
         id: start_time_spinner
         text: ''
+        option_cls: "TimeSelectOption"
         values: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
         pos_hint: {"center_x": .25, "center_y": .7}
         size_hint: .4, .05
+        font_size: self.height * 0.25
 
         on_text: root.starting_time_selected(self.text)
     Spinner:
         id: end_time_spinner
         text: ''
+        option_cls: "TimeSelectOption"
         values: []
         pos_hint: {"center_x": .7, "center_y": .7}
         size_hint: .4, .05
+        font_size: self.height * 0.25
         disabled: True
 
         on_text: root.end_time_selected(self.text)
     Spinner:
         id: workout_day_text
         text: ''
+        option_cls: "DaySelectOption"
         values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         pos_hint: {"center_x": .25, "center_y": .6}
         size_hint: .4, .05
+        font_size: self.height * 0.25
 
         on_text: root.day_selected(self.text)
     Spinner:
         id: examples
         text: ''
+        option_cls: "ExampleOption"
         values: []
         pos_hint: {"center_x": .7, "center_y": .6}
         size_hint: .4, .05
         disabled: True
+        font_size: self.height * 0.25
 
         on_text: root.example_selected(self.text)
     TextInput:
@@ -73,6 +95,7 @@
         text: "Save Workout"
         size_hint: .3, .05
         pos_hint: {"center_x": .3, "center_y": .12}
+        font_size: self.height * 0.25
         on_press: root.on_save_workout_button_press()
         disabled: True
     Button:
@@ -80,10 +103,12 @@
         text: 'Delete Workout'
         size_hint: .3, .05
         pos_hint: {"center_x": .7, "center_y": .12}
+        font_size: self.height * 0.25
         on_press: root.on_delete_workout_button_press()
         disabled : True
     Button:
         text: 'Back Without Saving'
         size_hint: .4, .05
         pos_hint: {"center_x": .5, "center_y": .06}
+        font_size: self.height * 0.25
         on_press: root.on_back_without_saving_button_press()

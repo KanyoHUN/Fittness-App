@@ -8,8 +8,8 @@
             id: calorie_label
             text: root.calorie_displayed
             size_hint: .3, .1
-            pos_hint: {"center_x": .5, "top": .9}
-            font_size: '35sp'
+            pos_hint: {"center_x": .5, "top": 0.9}
+            font_size: 0.3 * self.height
         TextInput:
             id: calorie_input
             text: ''
@@ -32,7 +32,7 @@
             text: root.carb_displayed
             size_hint: .3, .1
             pos_hint: {"center_x": .2, "top": .75}
-            font_size: '25sp'
+            font_size: 0.15 * self.height
         TextInput:
             id: carb_input
             text: ''
@@ -55,7 +55,7 @@
             text: root.fat_displayed
             size_hint: .3, .1
             pos_hint: {"center_x": .8, "top": .75}
-            font_size: '25sp'
+            font_size: 0.15 * self.height
         TextInput:
             id: fat_input
             text: ''
@@ -78,7 +78,7 @@
             text: root.protein_displayed
             size_hint: .3, .1
             pos_hint: {"center_x": .5, "top": .63}
-            font_size: '25sp'
+            font_size: 0.15 * self.height
         TextInput:
             id: protein_input
             text: ''
@@ -100,35 +100,35 @@
             text: 'Reset Intake'
             pos_hint: {"center_x": .5, "top": .45}
             size_hint: .2, .05
-            font_size : '14sp'
+            font_size : 0.3*self.height
             on_press: root.on_reset_intake_button_press()
         Button:
             text: 'Tutorials'
             pos_hint: {"right": .4, "top": .1}
             size_hint: .2, .1
-            font_size : '14sp'
+            font_size : 0.12*self.height
             on_press: root.on_video_links_button_press()
         Button:
             text: 'Workout Editor'
             pos_hint: {"right": .6, "top": .1}
             size_hint: .2, .1
-            font_size : '14sp'
+            font_size : 0.12*self.height
             on_press: root.on_workout_editor_button_press()
         Button:
             text: 'Nutrition plan'
             pos_hint: {"right": .2, "top": .1}
             size_hint: .2, .1
-            font_size : '14sp'
+            font_size : 0.12*self.height
             on_press: root.on_calorie_calculator_button_press()
         Button:
             text: 'Nutriments'
             pos_hint: {"right": .8, "top": .1}
             size_hint: .2, .1
-            font_size : '14sp'
+            font_size : 0.12*self.height
             on_press: root.on_nutriments_button_press()
         Button:
             text: 'Healthy Recipes'
             pos_hint: {"right": 1, "top": .1}
             size_hint: .2, .1
-            font_size : '14sp'
+            font_size : 0.12*self.height
             on_press: root.on_healthy_recipes_button_press()

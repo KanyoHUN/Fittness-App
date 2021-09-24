@@ -12,10 +12,11 @@ from pytube import YouTube
 class WorkoutTemplate(Screen):
     days_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5,
                  'Saturday': 6, 'Sunday': 7}
-    has_connection = True
+    has_connection = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.initialized = False
         self.selected_types = []
         self.workout_index = len(config.workouts)
         self.workouts_length_on_create = len(config.workouts) + 1
@@ -58,6 +59,8 @@ class WorkoutTemplate(Screen):
                     if temp not in config.workout_ids:
                         config.workout_ids.add(temp)
                         self.workout_id = temp
+                        self.name = str(self.workout_id)
+                        config.previous_screen = self.name
                         break
 
         if self.workouts_length_on_create > len(config.workouts):
@@ -110,18 +113,14 @@ class WorkoutTemplate(Screen):
         self.manager.current = 'editor'
         config.previous_screen = 'editor'
 
-    def on_temp_leave(self):
-        if self.name == 'temp':
-            self.name = str(self.workout_id)
-            config.previous_screen = self.name
-        else:
-            pass
-
     def on_enter(self, *args):
         for child in self.manager.children:
             if isinstance(child, ExampleVideo):
                 self.manager.remove_widget(child)
                 del child
+        self.check_examples_disability()
+        self.examples_values_check_and_fill()
+        self.ids.examples.text = 'Examples'
 
     def on_workout_button_click(self):
         self.manager.current = self.name
@@ -139,14 +138,15 @@ class WorkoutTemplate(Screen):
             self.examples_values_check_and_fill()
 
     def check_examples_disability(self):
-        if len(self.selected_types) > 0:
+        self.check_connection_without_change()
+        if len(self.selected_types) > 0 and self.has_connection:
             self.ids.examples.disabled = False
         else:
             self.ids.examples.disabled = True
 
     def examples_values_check_and_fill(self):
-        if len(self.ids.examples.values) <= 0:
-            self.check_internet_connection()
+        if len(self.ids.examples.values) <= 0 and len(self.selected_types) > 0:
+            self.check_connection_without_change()
             if self.has_connection:
                 self.sql_load()
         else:
@@ -163,11 +163,12 @@ class WorkoutTemplate(Screen):
             for key in pop_able_keys:
                 self.examples_dict.pop(key)
                 self.ids.examples.values.remove(key)
-            self.check_internet_connection()
-            if self.has_connection and len(self.ids.examples.values) > 0 and len(pop_able_keys) <= 0:
-                self.sql_load()
-            else:
-                pass
+            if len(pop_able_keys) <= 0:
+                self.check_connection_without_change()
+                if self.has_connection and len(self.ids.examples.values) > 0:
+                    self.sql_load()
+                else:
+                    pass
 
     def sql_formatting(self):
         result = ""
@@ -189,24 +190,30 @@ class WorkoutTemplate(Screen):
         return result
 
     def sql_load(self):
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                       passwd='IPt9fRRDYS')
-        mycursor = mydb.cursor()
-        mycursor.execute("Select links, titles, styles From sql11434313.Videos Where " + self.sql_formatting())
-        myresult = mycursor.fetchall()
+        sql_formated = self.sql_formatting()
 
-        for row in myresult:
-            data_list = [row[0], row[2]]
-            self.examples_dict[row[1]] = data_list
-            self.ids.examples.values.append(row[1])
+        if not sql_formated == "":
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS')
+            mycursor = mydb.cursor()
+            mycursor.execute("Select links, titles, styles From sql11434313.Videos Where " + sql_formated)
+            myresult = mycursor.fetchall()
+
+            for row in myresult:
+                data_list = [row[0], row[2]]
+                self.examples_dict[row[1]] = data_list
+                self.ids.examples.values.append(row[1])
 
     def example_selected(self, value):
-        self.check_internet_connection()
-        if self.has_connection and not value == 'Examples':
-            self.download_video(value)
-            video_viewer = ExampleVideo(name='example_temp')
-            self.manager.add_widget(video_viewer)
-            self.manager.current = 'example_temp'
+        if self.initialized:
+            self.check_internet_connection()
+            if self.has_connection and not value == 'Examples':
+                self.download_video(value)
+                video_viewer = ExampleVideo(name='example_temp')
+                self.manager.add_widget(video_viewer)
+                self.manager.current = 'example_temp'
+        else:
+            self.initialized = True
 
     def download_video(self, video_title):
         yt = YouTube(self.examples_dict[video_title][0])
@@ -221,6 +228,14 @@ class WorkoutTemplate(Screen):
         except:
             self.has_connection = False
             self.manager.current = 'net'
+
+    def check_connection_without_change(self):
+        try:
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
+            self.has_connection = True
+        except:
+            self.has_connection = False
 
     def starting_time_selected(self, value):
         worked = True

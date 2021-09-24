@@ -1,13 +1,13 @@
 
 
 <ActivityOption@SpinnerOption>:
-    font_size: '14sp'
+    font_size: 0.3 * self.height
 
 <SexOption@SpinnerOption>:
-    font_size: '15sp'
+    font_size: 0.4 * self.height
 
 <GoalOption@SpinnerOption>:
-    font_size: '15sp'
+    font_size: 0.4 * self.height
 
 <UserDataScreen>:
     id: UserDataScreen
@@ -15,12 +15,12 @@
         text: 'Calorie Calculator'
         pos_hint: {"center_x": .5, "top": 1}
         size_hint: .8, .1
-        font_size: '60sp'
+        font_size: 0.5 * self.height
     Label:
         text: 'Body mass:'
         pos_hint: {"right": .45, "top": .9}
         size_hint: .3, .1
-        font_size: '35sp'
+        font_size: 0.3 * self.height
     TextInput:
         id: body_mass
         text: ''
@@ -32,7 +32,7 @@
         text: 'Height:'
         pos_hint: {"right": .45, "top": .8}
         size_hint: .3, .1
-        font_size: '35sp'
+        font_size: 0.3 * self.height
     TextInput:
         id: height
         text: ''
@@ -44,7 +44,7 @@
         text: 'Age:'
         pos_hint: {"right": .45, "top": .7}
         size_hint: .3, .1
-        font_size: '35sp'
+        font_size: 0.3 * self.height
     TextInput:
         id: age
         text: ''
@@ -56,7 +56,7 @@
         text: 'Sex'
         pos_hint: {"right": .45, "top": .6}
         size_hint: .3, .1
-        font_size: '35sp'
+        font_size: 0.3 * self.height
     Spinner:
         id: sex
         text: ''
@@ -64,12 +64,12 @@
         values: ["Male", "Female"]
         pos_hint: {"right": .9, "center_y": .55}
         size_hint: .4, .05
-        font_size: '15sp'
+        font_size: 0.4 * self.height
     Label:
         text: 'Activity level:'
         pos_hint: {"right": .2, "top": .5}
         size_hint: .15, .1
-        font_size: '20sp'
+        font_size: 0.15 * self.height
     Spinner:
         id: activity
         text: ''
@@ -77,12 +77,12 @@
         values: ["Sedentary(little or no exercise, desk job)", "Lightly active(light exercise/ sports 1-3 days/week)", "Moderately active(moderate exercise/ sports 6-7 days/week)", "Very active(hard exercise every day, or exercising 2 xs/day)", "Extra active(hard exercise 2 or more times per day)"]
         pos_hint: {"right": 1, "center_y": .45}
         size_hint: .75, .05
-        font_size : '14sp'
+        font_size: 0.23 * self.height
     Label:
         text: 'Goal:'
         pos_hint: {"right": .45, "top": .4}
         size_hint: .3, .1
-        font_size: '35sp'
+        font_size: 0.3 * self.height
     Spinner:
         id: goal
         text: ''
@@ -90,30 +90,30 @@
         values: ["Maintain mass", "Mild mass loss", "Mass loss", "Extreme mass loss", "Mild mass gain", "Mass gain", "Fast mass gain"]
         pos_hint: {"right": .9, "center_y": .35}
         size_hint: .4, .05
-        font_size: '15sp'
+        font_size: 0.4 * self.height
     Label:
         id: results
         text: 'Results: '
         pos_hint: {"center_x": .5, "top": .3}
         size_hint: .3, .1
-        font_size: '18sp'
+        font_size: 0.15 * self.height
     Button:
         text: 'Calculate'
         pos_hint: {"center_x": .5, "top": .17}
         size_hint: .5, .05
-        font_size: '20sp'
+        font_size: 0.35 * self.height
         on_press: root.on_calculate_button_press()
     Button:
         id: save_button
         text: 'Back and Save'
         pos_hint: {"right": .45, "top": .1}
         size_hint: .4, .05
-        font_size: '20sp'
+        font_size: 0.35 * self.height
         disabled: True
         on_press: root.on_back_and_save_button_press()
     Button:
         text: 'Back Without Saving'
         pos_hint: {"right": .95, "top": .1}
         size_hint: .4, .05
-        font_size: '20sp'
+        font_size: 0.35 * self.height
         on_press: root.on_back_without_saving_button_press()

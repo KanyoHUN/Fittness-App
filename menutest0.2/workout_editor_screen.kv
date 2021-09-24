@@ -10,36 +10,46 @@
     Label:
         text: 'Mon'
         pos_hint: {"center_x": 0.07, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Tue'
         pos_hint: {"center_x": 0.21, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Wed'
         pos_hint: {"center_x": 0.36, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Thurs'
         pos_hint: {"center_x": 0.5, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Fri'
         pos_hint: {"center_x": 0.64, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Sat'
         pos_hint: {"center_x": 0.785, "center_y": .18}
+        font_size: self.height * 0.013
     Label:
         text: 'Sun'
         pos_hint: {"center_x": 0.925, "center_y": .18}
+        font_size: self.height * 0.013
     Button:
         text: 'Add New'
         size_hint: .33, .1
         pos_hint: {"center_x": 0.15, "center_y": .1}
+        font_size: self.height * 0.14
         on_press: root.on_add_new_button_press()
     Button:
         text: 'Delete All'
         size_hint: .33, .1
         pos_hint: {"center_x": 0.50, "center_y": .1}
+        font_size: self.height * 0.14
         on_press: root.on_delete_all_button_press()
     Button:
         text: 'Back'
         size_hint: .33, .1
         pos_hint: {"center_x": 0.85, "center_y": .1}
+        font_size: self.height * 0.14
         on_press: root.on_back_button_press()

@@ -45,15 +45,15 @@ class RecipeListScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False
 
     def get_recipes(self):
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                       passwd='IPt9fRRDYS', database='sql11434313')
+        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                       passwd=config.passwd, database=config.database)
         mycursor = mydb.cursor()
         mycursor.execute("SELECT name,cal,fat,ch,protein,recipe FROM healthy")
         myresult = mycursor.fetchall()

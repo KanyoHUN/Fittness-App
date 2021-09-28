@@ -226,8 +226,8 @@ class MenuScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False
@@ -235,8 +235,8 @@ class MenuScreen(Screen):
 
     def load_video_dict(self):
 
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                       passwd='IPt9fRRDYS', database='sql11434313')
+        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                       passwd=config.passwd, database=config.database)
         mycursor = mydb.cursor()
         mycursor.execute("Select links, titles from Videos")
         myresult = mycursor.fetchall()

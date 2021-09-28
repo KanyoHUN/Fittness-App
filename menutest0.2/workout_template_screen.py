@@ -193,8 +193,8 @@ class WorkoutTemplate(Screen):
         sql_formated = self.sql_formatting()
 
         if not sql_formated == "":
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd)
             mycursor = mydb.cursor()
             mycursor.execute("Select links, titles, styles From sql11434313.Videos Where " + sql_formated)
             myresult = mycursor.fetchall()
@@ -222,8 +222,8 @@ class WorkoutTemplate(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False
@@ -231,8 +231,8 @@ class WorkoutTemplate(Screen):
 
     def check_connection_without_change(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False

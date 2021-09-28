@@ -56,8 +56,8 @@ class SearchScreen(Screen):
         return "SELECT * FROM food where (name LIKE '%" + self.ids.searcher.text + "%')"
 
     def sql_search(self):
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                       passwd='IPt9fRRDYS', database='sql11434313')
+        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                       passwd=config.passwd, database=config.database)
         mycursor = mydb.cursor()
         mycursor.execute(self.sql_formatting())
         myresult = mycursor.fetchall()
@@ -67,8 +67,8 @@ class SearchScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False

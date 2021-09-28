@@ -35,7 +35,11 @@ class RecipeListScreen(Screen):
                 self.get_recipes()
                 SearchScreen.create_buttons(self)  # Enough to modify it in search.py
                 self.add_buttons()
-            self.recipes_loaded = True
+                self.recipes_loaded = True
+                self.ids.nonettext.color = (0, 0, 0)
+            else:
+                self.ids.nonettext.color = (1, 1, 1)
+
         else:
             pass
 
@@ -46,7 +50,6 @@ class RecipeListScreen(Screen):
             self.has_connection = True
         except:
             self.has_connection = False
-            self.manager.current = 'net'
 
     def get_recipes(self):
         mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',

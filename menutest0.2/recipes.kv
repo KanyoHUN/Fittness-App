@@ -1,6 +1,10 @@
 
 <RecipeListScreen>:
     id: RecipeListScreen
+    Label:
+        id: nonettext
+        text: "No Internet Connection"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
     ScrollView:
         HealthyRecipeButtons:
             padding: ("20dp", "20dp", "20dp", "20dp")
@@ -10,6 +14,7 @@
                 size_hint: 1, None
                 height: dp(150)
                 on_press: root.on_back_to_menu_button_press()
+
 
 #The below class is inheriting from RecipeView in search.kv if wanting to modify modify there
 <HealthyRecipeView>:

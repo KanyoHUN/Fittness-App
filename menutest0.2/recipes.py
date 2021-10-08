@@ -35,22 +35,24 @@ class RecipeListScreen(Screen):
                 self.get_recipes()
                 SearchScreen.create_buttons(self)  # Enough to modify it in search.py
                 self.add_buttons()
-            self.recipes_loaded = True
+                self.recipes_loaded = True
+                self.ids.nonettext.color = (1, 1, 1)
+            else:
+                self.ids.nonettext.color = config.app_color
         else:
             pass
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                           passwd='IPt9fRRDYS', database='sql11434313')
+            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                           passwd=config.passwd, database=config.database)
             self.has_connection = True
         except:
             self.has_connection = False
-            self.manager.current = 'net'
 
     def get_recipes(self):
-        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
-                                       passwd='IPt9fRRDYS', database='sql11434313')
+        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
+                                       passwd=config.passwd, database=config.database)
         mycursor = mydb.cursor()
         mycursor.execute("SELECT name,cal,fat,ch,protein,recipe FROM healthy")
         myresult = mycursor.fetchall()

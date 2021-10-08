@@ -1,119 +1,173 @@
-
-
 <ActivityOption@SpinnerOption>:
     font_size: self.width * 0.035
+    halign: "center"
 
 <SexOption@SpinnerOption>:
-    font_size: self.width * 0.09
+    font_size: self.width * 0.07
+    halign: "center"
 
 <GoalOption@SpinnerOption>:
-    font_size: self.width * 0.09
+    font_size: self.width * 0.07
+    halign: "center"
 
 <UserDataScreen>:
     id: UserDataScreen
-    Label:
+    MDLabel:
         text: 'Calorie Calculator'
         pos_hint: {"center_x": .5, "top": 1}
-        size_hint: .8, .1
-        font_size: 0.5 * self.height
-    Label:
-        text: 'Body mass:'
+        size_hint: 1, .1
+        halign: "center"
+        font_size: 0.45 * self.height
+        font_style:"H6"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+    MDLabel:
+        text: 'Body mass'
         pos_hint: {"right": .45, "top": .9}
         size_hint: .3, .1
-        font_size: 0.3 * self.height
-    TextInput:
+        font_size: 0.2 * self.height
+        font_style:"Body1"
+        halign:"center"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
+    MDTextFieldRound:
         id: body_mass
         text: ''
         pos_hint: {"right": .9, "center_y": .85}
         size_hint: .4, .035
         multiline: False
+        on_double_tap: self.text = ""
         on_text_validate: root.number_input_check(self)
-    Label:
-        text: 'Height:'
+
+    MDLabel:
+        text: 'Height'
         pos_hint: {"right": .45, "top": .8}
         size_hint: .3, .1
-        font_size: 0.3 * self.height
-    TextInput:
+        font_size: 0.2 * self.height
+        font_style:"Body1"
+        halign:"center"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
+    MDTextFieldRound:
         id: height
         text: ''
         pos_hint: {"right": .9, "center_y": .75}
         size_hint: .4, .035
         multiline: False
+        on_double_tap: self.text = ""
         on_text_validate: root.number_input_check(self)
-    Label:
-        text: 'Age:'
+
+    MDLabel:
+        text: 'Age'
         pos_hint: {"right": .45, "top": .7}
         size_hint: .3, .1
-        font_size: 0.3 * self.height
-    TextInput:
+        font_size: 0.2 * self.height
+        halign:"center"
+        font_style:"Body1"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
+    MDTextFieldRound:
         id: age
         text: ''
         pos_hint: {"right": .9, "center_y": .65}
         size_hint: .4, .035
         multiline: False
+        on_double_tap: self.text = ""
         on_text_validate: root.number_input_check(self)
-    Label:
+
+    MDLabel:
         text: 'Sex'
         pos_hint: {"right": .45, "top": .6}
         size_hint: .3, .1
-        font_size: 0.3 * self.height
+        font_size: 0.2 * self.height
+        halign:"center"
+        font_style:"Body1"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
     Spinner:
         id: sex
         text: ''
         option_cls: "SexOption"
         values: ["Male", "Female"]
-        pos_hint: {"right": .9, "center_y": .55}
-        size_hint: .4, .05
+        pos_hint: {"right": .94, "center_y": .55}
+        size_hint: .47, .035
         font_size: 0.4 * self.height
-    Label:
-        text: 'Activity level:'
-        pos_hint: {"right": .2, "top": .5}
-        size_hint: .15, .1
-        font_size: 0.15 * self.height
+        halign: "center"
+
+    MDLabel:
+        text: 'Activity\nlevel'
+        pos_hint: {"right": .3, "top": .5}
+        size_hint: .3, .1
+        font_size: 0.2 * self.height
+        font_style:"Body1"
+        halign:"center"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
     Spinner:
         id: activity
         text: ''
         option_cls: "ActivityOption"
         values: ["Sedentary(little or no exercise, desk job)", "Lightly active(light exercise/ sports 1-3 days/week)", "Moderately active(moderate exercise/ sports 6-7 days/week)", "Very active(hard exercise every day, or exercising 2 xs/day)", "Extra active(hard exercise 2 or more times per day)"]
         pos_hint: {"right": 1, "center_y": .45}
-        size_hint: .75, .05
-        font_size: 0.23 * self.height
-    Label:
-        text: 'Goal:'
+        size_hint: .75, .035
+        font_size: 0.3 * self.height
+        halign: "center"
+
+    MDLabel:
+        text: 'Goal'
         pos_hint: {"right": .45, "top": .4}
         size_hint: .3, .1
-        font_size: 0.3 * self.height
+        font_size: 0.2 * self.height
+        font_style:"Body1"
+        halign:"center"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
     Spinner:
         id: goal
         text: ''
         option_cls: "GoalOption"
         values: ["Maintain mass", "Mild mass loss", "Mass loss", "Extreme mass loss", "Mild mass gain", "Mass gain", "Fast mass gain"]
-        pos_hint: {"right": .9, "center_y": .35}
-        size_hint: .4, .05
+        pos_hint: {"right": .94, "center_y": .35}
+        size_hint: .47, .035
+        halign:"center"
         font_size: 0.4 * self.height
-    Label:
+
+    MDLabel:
         id: results
         text: 'Results: '
+        halign:"center"
+        font_style:"Body1"
         pos_hint: {"center_x": .5, "top": .3}
-        size_hint: .3, .1
+        size_hint: 1, .1
         font_size: 0.15 * self.height
-    Button:
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+
+    MDRaisedButton:
         text: 'Calculate'
-        pos_hint: {"center_x": .5, "top": .17}
-        size_hint: .5, .05
+        pos_hint: {"center_x": .5, "top": .23}
+        size_hint: .2, .035
         font_size: 0.35 * self.height
         on_press: root.on_calculate_button_press()
-    Button:
+
+    MDRaisedButton:
         id: save_button
         text: 'Back and Save'
-        pos_hint: {"right": .45, "top": .1}
-        size_hint: .4, .05
-        font_size: 0.35 * self.height
+        pos_hint: {"right": .25, "top": .1}
+        size_hint: .2, .035
         disabled: True
+        font_size: 0.28 * self.height
         on_press: root.on_back_and_save_button_press()
-    Button:
+
+    MDRaisedButton:
         text: 'Back Without Saving'
         pos_hint: {"right": .95, "top": .1}
-        size_hint: .4, .05
-        font_size: 0.35 * self.height
+        size_hint: .2, .035
+        font_size: 0.28 * self.height
         on_press: root.on_back_without_saving_button_press()

@@ -2,13 +2,14 @@ from kivy.graphics import Color, Line
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
+from kivymd.app import MDApp
+
 import config
 import os
 from workout_template_screen import WorkoutTemplate
 
 
 class WorkoutEditor(Screen):
-
     class Display1(FloatLayout):
         # In this class the workout editor table is created to modify the lines checkout functions
         vertical_lines = []
@@ -25,26 +26,26 @@ class WorkoutEditor(Screen):
 
         def init_vertical_lines(self):
             with self.canvas.before:
-                Color(1, 1, 1)
+                Color(0, 0, 0)
                 for i in range(0, 8):
                     self.vertical_lines.append(Line())
 
         def update_vertical_lines(self):
             for i in range(0, 8):
-                x1, y1 = 0+i/7*self.width, .2 * self.height
-                x2, y2 = 0+i/7*self.width, self.height
+                x1, y1 = 0 + i / 7 * self.width, .2 * self.height
+                x2, y2 = 0 + i / 7 * self.width, self.height
                 self.vertical_lines[i].points = [x1, y1, x2, y2]
 
         def init_horizontal_lines(self):
             with self.canvas.before:
-                Color(1, 1, 1)
+                Color(0, 0, 0)
                 for i in range(0, 25):
                     self.horizontal_lines.append(Line())
 
         def update_horizontal_lines(self):
             for i in range(0, 25):
-                x1, y1 = 0, .2*self.height + i/30*self.height
-                x2, y2 = self.width, .2*self.height + i/30*self.height
+                x1, y1 = 0, .2 * self.height + i / 30 * self.height
+                x2, y2 = self.width, .2 * self.height + i / 30 * self.height
                 self.horizontal_lines[i].points = [x1, y1, x2, y2]
 
         def on_back_button_press(self):
@@ -53,7 +54,8 @@ class WorkoutEditor(Screen):
 
         def on_add_new_button_press(self):
             new_workout_screen = WorkoutTemplate(name='temp')
-            self.parent.manager.add_widget(new_workout_screen)
+            if new_workout_screen not in self.parent.manager.children:
+                self.parent.manager.add_widget(new_workout_screen)
             self.parent.manager.current = 'temp'
             config.previous_screen = 'temp'
 

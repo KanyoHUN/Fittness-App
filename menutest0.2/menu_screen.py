@@ -20,7 +20,7 @@ class MenuScreen(Screen):
     created = False
 
     def on_pre_enter(self, *args):
-        self.calorie_displayed = str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
+        self.calorie_displayed = "Calories: " + str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
         self.carb_displayed = "Carbs: " + str(user.macros_used["Carbs"]) + "g/" + str(user.macros["Carbs"]) + "g"
         self.fat_displayed = "Fats: " + str(user.macros_used["Fats"]) + "g/" + str(user.macros["Fats"]) + "g"
         self.protein_displayed = "Proteins: " + str(user.macros_used["Proteins"]) + "g/" + str(user.macros["Proteins"]) + "g"
@@ -30,7 +30,7 @@ class MenuScreen(Screen):
             self.created = True
 
     def print_labels(self):  # Can be tinkered with in order to make GUI better!
-        self.ids.calorie_label.text = str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
+        self.ids.calorie_label.text = "Calories: " + str(user.macros_used["Calories"]) + "kcal/" + str(user.macros["Calories"]) + "kcal"
         self.ids.carb_label.text = "Carbs: " + str(user.macros_used["Carbs"]) + "g/" + str(user.macros["Carbs"]) + "g"
         self.ids.fat_label.text = "Fats: " + str(user.macros_used["Fats"]) + "g/" + str(user.macros["Fats"]) + "g"
         self.ids.protein_label.text = "Proteins: " + str(user.macros_used["Proteins"]) + "g/" + str(user.macros["Proteins"]) + "g"
@@ -38,19 +38,19 @@ class MenuScreen(Screen):
         if user.macros_used["Calories"] > user.macros["Calories"]:
             self.ids.calorie_label.color = (1, 0, 0)
         else:
-            self.ids.calorie_label.color = (1, 1, 1)
+            self.ids.calorie_label.color = config.app_color
         if user.macros_used["Carbs"] > user.macros["Carbs"]:
             self.ids.carb_label.color = (1, 0, 0)
         else:
-            self.ids.carb_label.color = (1, 1, 1)
+            self.ids.carb_label.color = config.app_color
         if user.macros_used["Fats"] > user.macros["Fats"]:
             self.ids.fat_label.color = (1, 0, 0)
         else:
-            self.ids.fat_label.color = (1, 1, 1)
+            self.ids.fat_label.color = config.app_color
         if user.macros_used["Proteins"] > user.macros["Proteins"]:
             self.ids.protein_label.color = (1, 0, 0)
         else:
-            self.ids.protein_label.color = (1, 1, 1)
+            self.ids.protein_label.color = config.app_color
 
     def on_plus_button_press(self, box):
         if box == self.ids.calorie:
@@ -211,7 +211,7 @@ class MenuScreen(Screen):
         else:
             pass
 
-    def on_video_links_button_press(self):
+    def on_video_links_button_press(self):#--------------------------------------tutorials
         if not config.video_dict:
             self.check_internet_connection()
             if self.has_connection:
@@ -226,8 +226,8 @@ class MenuScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd, database=config.database)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
         except:
             self.has_connection = False
@@ -235,8 +235,8 @@ class MenuScreen(Screen):
 
     def load_video_dict(self):
 
-        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                       passwd=config.passwd, database=config.database)
+        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                       passwd='IPt9fRRDYS', database='sql11434313')
         mycursor = mydb.cursor()
         mycursor.execute("Select links, titles from Videos")
         myresult = mycursor.fetchall()

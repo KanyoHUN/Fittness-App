@@ -56,8 +56,8 @@ class SearchScreen(Screen):
         return "SELECT * FROM food where (name LIKE '%" + self.ids.searcher.text + "%')"
 
     def sql_search(self):
-        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                       passwd=config.passwd, database=config.database)
+        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                       passwd='IPt9fRRDYS', database='sql11434313')
         mycursor = mydb.cursor()
         mycursor.execute(self.sql_formatting())
         myresult = mycursor.fetchall()
@@ -67,8 +67,8 @@ class SearchScreen(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd, database=config.database)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
         except:
             self.has_connection = False
@@ -95,12 +95,12 @@ class SearchScreen(Screen):
 
     def create_buttons(self):
         for key in self.recipe_dict:
-            b = Button(text=key, size_hint=(1, None), height=dp(150))  # Do not touch text,height or size_hint!
+            b = Button(text=key, size_hint=(1, None), height=dp(150), background_color=config.app_color)  #.R. Do not touch text,height or size_hint!
             # But can add more specification for UI customization
             b.on_press = partial(self.food_button_press, key)
             self.buttons.append(b)
         if not self.recipe_dict:
-            b = Button(text="No match found!", size_hint=(1, None), height=dp(150))  # Same here.
+            b = Button(text="No match found!", size_hint=(1, None), height=dp(150), background_color=config.app_color)  # Same here.
             self.buttons.append(b)
 
     def add_buttons(self):
@@ -174,7 +174,6 @@ class SearchScreen(Screen):
 
 
 class RecipeButtons(StackLayout):
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (1, None)

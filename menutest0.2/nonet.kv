@@ -2,13 +2,17 @@
 
 <NoNetScreen>:
     id: NoNetScreen
-    RelativeLayout:
-        Label:
+    BoxLayout:
+        orientation:"vertical"
+        MDLabel:
             text:'NO INTERNET CONNECTION!'
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint: .5, .5
-        Button:
+            halign:"center"
+            theme_text_color:"Custom"
+            text_color:app.theme_cls.primary_color
+
+        MDRaisedButton:
             text: 'OK'
-            pos_hint: {"center_x": .5, "center_y": .45}
-            size_hint: .1, .05
+            pos_hint:{"center_x":0.5, "center_y":0.4}
             on_press: root.change_screen_back()
+        Widget:
+            size_hint:0.2,0.8

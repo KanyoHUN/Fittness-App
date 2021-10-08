@@ -1,8 +1,9 @@
 import os
 import certifi
-from kivy.app import App
-from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager
+from kivymd.app import MDApp
+from kivy.core.window import Window
+from kivy import platform
 from user import User, save_user_data
 from nonet import NoNetScreen
 from bad_input import BadInputScreen
@@ -20,7 +21,6 @@ from recipes import RecipeListScreen, HealthyRecipeView
 
 # All imports above are needed for Application to run!!!
 # IMPORTANT: DO NOT CHANGE ANY ID IN KV FILES!!!!! IT WILL BREAK THE CODE FOR SURE!!!!
-
 os.environ['SSL_CERT_FILE'] = certifi.where()  # needed to access internet on android
 
 
@@ -28,11 +28,15 @@ class ScreenManager1(ScreenManager):
     pass
 
 
-class MenuTestApp(App):
+class MenuTestApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        config.app_color = self.theme_cls.primary_color
         Window.size = (540, 1200)
-    # pass
+        # pass
+
+    def build(self):
+        self.theme_cls.theme_style = "Light"
 
 
 MenuTestApp().run()

@@ -1,4 +1,6 @@
 import os
+
+from kivy.graphics import Color, RoundedRectangle
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -23,7 +25,10 @@ class LinkListScreen(Screen):
                         if isinstance(child, VideoButtons):
                             i = 0
                             for video in config.video_dict.keys():
-                                b = Button(text=video, size_hint=(1, None), height=dp(150))
+                                b = Button(text=video, size_hint=(1, None),
+                                           background_color=config.app_color)
+                                b.font_size = self.width * 0.2
+
                                 # Can modify the above to make GUI better. Do not modify: text, or on_press
                                 # To modify size ask Csaba first
                                 b.on_press = partial(child.video_button_press, video)

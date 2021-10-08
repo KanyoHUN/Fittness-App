@@ -35,31 +35,29 @@ class RecipeListScreen(Screen):
                 self.get_recipes()
                 SearchScreen.create_buttons(self)  # Enough to modify it in search.py
                 self.add_buttons()
-                self.recipes_loaded = True
-                self.ids.nonettext.color = (0, 0, 0)
-            else:
-                self.ids.nonettext.color = (1, 1, 1)
-
+            self.recipes_loaded = True
         else:
             pass
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd, database=config.database)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
         except:
             self.has_connection = False
+            self.manager.current = 'net'
 
     def get_recipes(self):
-        mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                       passwd=config.passwd, database=config.database)
+        mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                       passwd='IPt9fRRDYS', database='sql11434313')
         mycursor = mydb.cursor()
         mycursor.execute("SELECT name,cal,fat,ch,protein,recipe FROM healthy")
         myresult = mycursor.fetchall()
 
         for row in myresult:
-            self.recipe_dict[row[0]] = [float(row[1]), float(row[2]), float(row[3]), float(row[4]), str(row[5]).replace("/n", "\n")]
+            self.recipe_dict[row[0]] = [float(row[1]), float(row[2]), float(row[3]), float(row[4]),
+                                        str(row[5]).replace("/n", "\n")]
 
     def food_button_press(self, name):
         if not self.screen_added:
@@ -104,7 +102,7 @@ class RecipeListScreen(Screen):
         config.previous_screen = 'healthy'
 
     def add_buttons(self):
-        for child_outer in self. children:
+        for child_outer in self.children:
             if isinstance(child_outer, ScrollView):
                 for child in child_outer.children:
                     if isinstance(child, HealthyRecipeButtons):

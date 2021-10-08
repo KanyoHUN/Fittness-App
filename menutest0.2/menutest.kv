@@ -1,3 +1,24 @@
+<Spinner>:
+    size_hint_y:None
+    text_size:self.width,None
+    height:self.texture_size[1]
+    font_size:18
+    background_color:app.theme_cls.primary_color
+    padding:[3,3]
+
+<SpinnerOption>:
+    background_color:0,0,0,1
+    canvas.before:
+        RoundedRectangle:
+            pos:self.pos
+            size:self.size
+
+    size_hint_y:None
+    text_size:self.width,None
+    height:self.texture_size[1]+10
+    padding:[5,2]
+
+#:import NoTransition kivy.uix.screenmanager.NoTransition
 #:include recipes.kv
 #Some healthy foods with recipes. Same as search basically but has an added recipe displayed.
 #The recipe in the database has to be one line with /n where you want to have an end of line

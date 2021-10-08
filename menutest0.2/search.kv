@@ -4,82 +4,94 @@
     id: SearchScreen
     BoxLayout:
         orientation: "vertical"
-        TextInput:
+        Widget:
+            size_hint_y:.03
+        MDTextFieldRound:
             id: searcher
-            text: "Enter food name"
+            hint_text: "Enter food name"
             multiline: False
-            size_hint: .5, .05
+            size_hint: .5, .1
             pos_hint: {'center_x': .5}
-        Button:
+            on_double_tap: self.text = ""
+        Widget:
+            size_hint_y:.08
+        MDRaisedButton:
             text: "Search"
-            size_hint: .45, .05
             pos_hint: {'center_x': .5}
             on_press: root.on_search_button_press()
         ScrollView:
             RecipeButtons:
                 padding: ("20dp", "20dp", "20dp", "20dp")
                 spacing: "20dp", "20dp"
-                Button:
+
+                MDRaisedButton:
                     text: 'Back To Menu'
-                    size_hint: 1, None
-                    height: dp(150)
                     on_press: root.back_to_menu_button_press()
 
 <RecipeView>:
     id: RecipeView
-    Label:
-        id:food_name
-        text: ''
-        size_hint: .6, .2
-        font_size: self.width * 0.1
-        pos_hint: {"center_x": .5, "top": 1}
-    Label:
-        id:food_macros
-        text: ''
-        size_hint: .6, .2
-        font_size: self.width * 0.05
-        pos_hint: {"center_x": .5, "top": .95}
-    TextInput:
-        id:grams_input
-        text: ''
-        multiline: False
-        size_hint: .2, .03
-        pos_hint: {"right": .3, "top":.83}
-    Label:
-        text: 'g'
-        size_hint: .1, .03
-        font_size: self.width * .4
-        pos_hint:{"right": .36, "top":.83}
-    Button:
-        text: 'Calculate'
-        size_hint: .2, .03
-        pos_hint: {"right": .3, "top":.8}
-        font_size: self.width * .2
-        on_press: root.on_calculate_button_press()
-    Label:
-        id:results
-        text: ''
-        size_hint: .6, .2
-        font_size: self.width * 0.05
-        pos_hint: {"center_x": .5, "top": .83}
-    Button:
-        id:add_button
-        text: 'Add to Intake'
-        size_hint: .5, .05
-        pos_hint: {"center_x": .5, "top":.7}
-        font_size: self.width * 0.06
-        disabled: True
-        on_press: root.on_add_to_intake_button_press()
-    Label:
-        id:user_data_display
-        text: ''
-        size_hint: .5, .05
-        pos_hint: {"center_x": .5, "top":.6}
-        font_size: self.width * 0.05
-    Button:
-        id:Back
-        text: 'Back To Searching'
-        size_hint: 1, .1
-        pos_hint: {"center_x": .5, "top":.1}
-        font_size: self.width * 0.05
-        on_press: root.on_back_to_searching_button_press()
+    BoxLayout:
+        orientation:"vertical"
+        pos_hint: {'center_x': .5, "top":0.95}
+        size_hint_y:0.6
+        spacing:10
+        MDLabel:
+            id:food_name
+            text: ''
+            halign:"center"
+            size_hint_y:0.3
+            theme_text_color:"Custom"
+            text_color:app.theme_cls.primary_color
+        MDLabel:
+            id:food_macros
+            text: ''
+            halign:"center"
+            size_hint_y:0.5
+            theme_text_color:"Custom"
+            text_color:app.theme_cls.primary_color
+        MDLabel:
+            id:results
+            text: ''
+            halign:"center"
+            theme_text_color:"Custom"
+            text_color:app.theme_cls.primary_color
+
+        MDLabel:
+            id:user_data_display
+            text: ''
+            halign:"center"
+            theme_text_color:"Custom"
+            pos_hint:{"center_y":0.3}
+            text_color:app.theme_cls.primary_color
+    #--------------------------------------------------------
+        MDTextFieldRound:
+            id:grams_input
+            text: ''
+            multiline: False
+            pos_hint:{"bottom":0.35, "center_x":0.5}
+            size_hint:0.5,0.3
+            hint_text:"In grams(g)"
+            on_double_tap: self.text = ""
+
+    BoxLayout:
+        pos_hint:{"bottom":0.05}
+        size_hint_y:0.15
+        spacing:5
+        padding:3
+        MDRaisedButton:
+            text: 'Calculate'
+            font_style:"Overline"
+            on_press: root.on_calculate_button_press()
+
+        MDRaisedButton:
+            id:Back
+            text: 'Back To Searching'
+            font_style:"Overline"
+            on_press: root.on_back_to_searching_button_press()
+
+        MDRaisedButton:
+            id:add_button
+            text: 'Add to Intake'
+            font_style:"Overline"
+            disabled: True
+            on_press: root.on_add_to_intake_button_press()

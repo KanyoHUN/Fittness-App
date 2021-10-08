@@ -7,10 +7,8 @@
         VideoButtons:
             padding: ("20dp", "20dp", "20dp", "20dp")
             spacing: "20dp", "20dp"
-            Button:
+            MDRaisedButton:
                 text: 'Back To Menu'
-                size_hint: 1, None
-                height: dp(150)
                 on_press: root.back_to_menu_button_press()
 
 <VideoButtons>:
@@ -24,9 +22,8 @@
         VideoPlayer:
             id: video
             allow_stretch: True
-        Button:
+        MDRaisedButton:
             id: back_button
             text: 'Back To Tutorials'
-            size_hint: 1, .2
             disabled: True
             on_press: root.on_back_to_videos_button_press()

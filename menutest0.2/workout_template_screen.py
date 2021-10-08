@@ -31,7 +31,7 @@ class WorkoutTemplate(Screen):
         self.ids.workout_day_text.text = 'Select Day'
         self.workout_name = 'My workout'
         self.ids.workout_name_input.text = self.workout_name
-        self.ids.custom_desc.text = 'Customisable workout description.'
+        # i have set a hint text for this self.ids.custom_desc.text = 'Customisable workout description.'
         self.workout_id = 0
         self.ids.workout_types_selected.text = 'Selected Workout types: '
         self.ids.examples.text = 'Examples'
@@ -42,7 +42,7 @@ class WorkoutTemplate(Screen):
     def spinner_clicked(self, value):
         if value not in self.selected_types:
             self.selected_types.append(value)
-            self.label_text += value+', '
+            self.label_text += value + ', '
 
         self.ids.workout_types_selected.text = self.label_text
         self.check_examples_disability()
@@ -69,8 +69,11 @@ class WorkoutTemplate(Screen):
 
         if self.time_difference == 99:
             self.time_difference = t_diff
-            button = Button(text=self.workout_name, font_size=1/7*self.width*0.16, size_hint=(1/7, (0.8/24)*self.time_difference),
-                            pos_hint={"right": 1/7*self.workout_day, "top": (1-(.8/24)*(self.start_time-1))})
+            button = Button(text=self.workout_name, font_size=1 / 7 * self.width * 0.16,
+                            size_hint=(1 / 7, (0.8 / 24) * self.time_difference),
+                            pos_hint={"right": 1 / 7 * self.workout_day,
+                                      "top": (1 - (.8 / 24) * (self.start_time - 1))},
+                            background_color=config.app_color)
             # Here only modify color or texture do not modify size pos etc.
             button.on_press = self.on_workout_button_click
             config.workout_buttons.append(button)
@@ -78,9 +81,9 @@ class WorkoutTemplate(Screen):
             self.time_difference = t_diff
             self.workout_name = self.ids.workout_name_input.text
             config.workout_buttons[self.workout_index].text = self.workout_name
-            config.workout_buttons[self.workout_index].size_hint = (1/7, (0.8/24)*self.time_difference)
-            config.workout_buttons[self.workout_index].pos_hint = {"right": 1/7*self.workout_day,
-                                                            "top": (1-(.8/24)*(self.start_time-1))}
+            config.workout_buttons[self.workout_index].size_hint = (1 / 7, (0.8 / 24) * self.time_difference)
+            config.workout_buttons[self.workout_index].pos_hint = {"right": 1 / 7 * self.workout_day,
+                                                                   "top": (1 - (.8 / 24) * (self.start_time - 1))}
         self.examples_values = []
         for value in self.ids.examples.values:
             self.examples_values.append(value)
@@ -109,7 +112,6 @@ class WorkoutTemplate(Screen):
         config.previous_screen = 'editor'
 
     def on_back_without_saving_button_press(self):
-
         self.manager.current = 'editor'
         config.previous_screen = 'editor'
 
@@ -130,9 +132,9 @@ class WorkoutTemplate(Screen):
         if len(self.selected_types) > 0:
             removable = self.selected_types.pop()
             text_len = len(self.label_text)
-            for i in range(text_len, text_len-(len(removable)+2), -1):
+            for i in range(text_len, text_len - (len(removable) + 2), -1):
                 length = len(self.label_text)
-                self.label_text = self.label_text[:length-1]
+                self.label_text = self.label_text[:length - 1]
             self.ids.workout_types_selected.text = self.label_text
             self.check_examples_disability()
             self.examples_values_check_and_fill()
@@ -176,14 +178,14 @@ class WorkoutTemplate(Screen):
         for type in self.selected_types:
             if i == 0:
                 if type not in self.added_example_types:
-                    result += "styles='"+type+"'"
+                    result += "styles='" + type + "'"
                     self.added_example_types.add(type)
                     i += 1
                 else:
                     pass
             else:
                 if type not in self.added_example_types:
-                    result += " OR styles='"+type+"'"
+                    result += " OR styles='" + type + "'"
                     self.added_example_types.add(type)
                 else:
                     pass
@@ -193,8 +195,8 @@ class WorkoutTemplate(Screen):
         sql_formated = self.sql_formatting()
 
         if not sql_formated == "":
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS')
             mycursor = mydb.cursor()
             mycursor.execute("Select links, titles, styles From sql11434313.Videos Where " + sql_formated)
             myresult = mycursor.fetchall()
@@ -222,8 +224,8 @@ class WorkoutTemplate(Screen):
 
     def check_internet_connection(self):
         try:
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd, database=config.database)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
         except:
             self.has_connection = False
@@ -231,8 +233,8 @@ class WorkoutTemplate(Screen):
 
     def check_connection_without_change(self):
         try:
-            mydb = mysql.connector.connect(host=config.host, user=config.database_user,
-                                           passwd=config.passwd, database=config.database)
+            mydb = mysql.connector.connect(host='sql11.freemysqlhosting.net', user='sql11434313',
+                                           passwd='IPt9fRRDYS', database='sql11434313')
             self.has_connection = True
         except:
             self.has_connection = False
@@ -249,7 +251,7 @@ class WorkoutTemplate(Screen):
             self.ids.save_button.disabled = True
             self.start_time = int(value)
             end_time_values = []
-            for i in range(self.start_time+1, 25):
+            for i in range(self.start_time + 1, 25):
                 end_time_values.append(str(i))
             self.ids.end_time_spinner.values = end_time_values
             self.ids.end_time_spinner.disabled = False

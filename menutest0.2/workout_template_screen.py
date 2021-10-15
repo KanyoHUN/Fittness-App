@@ -211,14 +211,31 @@ class WorkoutTemplate(Screen):
 
     def example_selected(self, value):
         if self.initialized:
+            self.check_video_exists()
             self.check_internet_connection()
             if self.has_connection and not value == 'Examples':
-                self.download_video(value)
-                video_viewer = ExampleVideo(name='example_temp')
-                self.manager.add_widget(video_viewer)
-                self.manager.current = 'example_temp'
+                generated_id = 0
+                while True:
+                    generated_id = random.randint(1, 100)
+                    if generated_id not in config.thread_ids:
+                        config.current_thread_id = generated_id
+                        config.thread_ids.append(generated_id)
+                        break
+                    else:
+                        pass
+                config.create_thread_example(value, generated_id, self.examples_dict)
+                config.current_thread.start()
+                self.manager.current = 'loading'
+            else:
+                pass
         else:
             self.initialized = True
+
+    def check_video_exists(self):
+        if os.path.isfile('test.mp4'):
+            os.remove('test.mp4')
+        else:
+            pass
 
     def download_video(self, video_title):
         yt = YouTube(self.examples_dict[video_title][0])

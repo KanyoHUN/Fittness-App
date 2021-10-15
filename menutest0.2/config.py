@@ -31,7 +31,26 @@ def download_video(video_title, thread_id):
         thread_ids.remove(thread_id)
 
 
+def download_video_examples(video_title, thread_id, examples_dict):
+    global current_thread_id
+    yt = YouTube(examples_dict[video_title][0])
+    stream = yt.streams.filter(res='720p').first()
+    downloadable_filename = str(thread_id) + ".mp4"
+    stream.download(filename=downloadable_filename)
+    if thread_id not in thread_ids:
+        os.remove(downloadable_filename)
+    else:
+        os.rename(downloadable_filename, 'test.mp4')
+        thread_ids.remove(thread_id)
+
+
 def create_thread(video_title, thread_id):
     global current_thread
     download_thread = threading.Thread(target=download_video, args=(video_title, thread_id,), daemon=True)
+    current_thread = download_thread
+
+
+def create_thread_example(video_title, thread_id, examples_dict):
+    global current_thread
+    download_thread = threading.Thread(target=download_video_examples, args=(video_title, thread_id, examples_dict,), daemon=True)
     current_thread = download_thread

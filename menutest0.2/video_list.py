@@ -108,8 +108,7 @@ class VideoScreen(Screen):
         self.ids.back_button.disabled = False
 
     def on_back_to_videos_button_press(self):
-        self.manager.current = 'links'
-        config.previous_screen = 'links'
+        self.manager.current = config.previous_screen
         self.removable = self.ids.video.source
         self.ids.video.source = ''
         self.ids.video.state = 'stop'
@@ -126,7 +125,6 @@ class VideoScreen(Screen):
 class LoadingScreen(Screen):
     def on_continue_button_press(self):
         self.manager.current = 'video'
-        config.previous_screen = 'video'
 
     def check_download_thread(self):
         while True:

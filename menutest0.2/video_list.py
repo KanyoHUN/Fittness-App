@@ -91,11 +91,6 @@ class VideoButtons(StackLayout):
             self.has_connection = False
             self.parent.parent.manager.current = 'net'
 
-    def download_video(self, video_title):
-        yt = YouTube(config.video_dict[video_title])
-        stream = yt.streams.filter(res='720p').first()
-        stream.download(filename='test.mp4')
-
 
 class VideoScreen(Screen):
 

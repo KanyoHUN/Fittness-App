@@ -237,11 +237,6 @@ class WorkoutTemplate(Screen):
         else:
             pass
 
-    def download_video(self, video_title):
-        yt = YouTube(self.examples_dict[video_title][0])
-        stream = yt.streams.filter(res='720p').first()
-        stream.download(filename='test.mp4')
-
     def check_internet_connection(self):
         try:
             mydb = mysql.connector.connect(host=config.host, user=config.database_user,

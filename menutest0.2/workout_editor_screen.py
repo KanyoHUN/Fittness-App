@@ -54,8 +54,7 @@ class WorkoutEditor(Screen):
 
         def on_add_new_button_press(self):
             new_workout_screen = WorkoutTemplate(name='temp')
-            if new_workout_screen not in self.parent.manager.children:
-                self.parent.manager.add_widget(new_workout_screen)
+            self.parent.manager.add_widget(new_workout_screen)
             self.parent.manager.current = 'temp'
             config.previous_screen = 'temp'
 

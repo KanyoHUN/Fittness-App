@@ -114,6 +114,9 @@ class WorkoutTemplate(Screen):
     def on_back_without_saving_button_press(self):
         self.manager.current = 'editor'
         config.previous_screen = 'editor'
+        screen_object = self.manager.get_screen('temp')
+        self.manager.remove_widget(screen_object)
+        del screen_object
 
     def on_enter(self, *args):
         for child in self.manager.children:

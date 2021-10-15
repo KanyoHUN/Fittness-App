@@ -27,3 +27,29 @@
             text: 'Back To Tutorials'
             disabled: True
             on_press: root.on_back_to_videos_button_press()
+
+<LoadingScreen>:
+    id: LoadingScreen
+    on_pre_enter: root.create_thread()
+    MDLabel:
+        id: load_text
+        text: "Video is loading..."
+        size_hint: 1, .05
+        pos_hint: {"center_x": .5, "top": .6}
+        font_size: self.width * 0.05
+        halign: "center"
+        theme_text_color:"Custom"
+        text_color:app.theme_cls.primary_color
+    MDRaisedButton:
+        id: cont
+        text: "Continue"
+        size_hint: .3, .05
+        pos_hint: {"center_x": .7, "top": .5}
+        on_press: root.on_continue_button_press()
+        disabled: True
+    MDRaisedButton:
+        id: canc
+        text: "Cancel"
+        size_hint: .3, .05
+        pos_hint: {"center_x": .3, "top": .5}
+        on_press: root.on_cancel_button_press()

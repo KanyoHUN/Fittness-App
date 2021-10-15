@@ -24,6 +24,15 @@ from recipes import RecipeListScreen, HealthyRecipeView
 os.environ['SSL_CERT_FILE'] = certifi.where()  # needed to access internet on android
 
 
+def clean_trash():
+    file_list = os.listdir()
+    for f in file_list:
+        if ".mp4" in f:
+            os.remove(f)
+        else:
+            pass
+
+
 class ScreenManager1(ScreenManager):
     pass
 
@@ -39,4 +48,5 @@ class MenuTestApp(MDApp):
         self.theme_cls.theme_style = "Light"
 
 
+clean_trash()
 MenuTestApp().run()

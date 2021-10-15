@@ -1,5 +1,7 @@
 import os
-
+import threading
+import time
+import random
 from kivy.graphics import Color, RoundedRectangle
 from kivy.metrics import dp
 from kivy.uix.button import Button
@@ -60,9 +62,18 @@ class VideoButtons(StackLayout):
         self.check_video_exists()
         self.check_internet_connection()
         if self.has_connection:
-            self.download_video(video_title)
-            self.parent.parent.manager.current = 'video'
-            config.previous_screen = 'video'
+            generated_id = 0
+            while True:
+                generated_id = random.randint(1, 100)
+                if generated_id not in config.thread_ids:
+                    config.current_thread_id = generated_id
+                    config.thread_ids.append(generated_id)
+                    break
+                else:
+                    pass
+            config.create_thread(video_title, generated_id)
+            config.current_thread.start()
+            self.parent.parent.manager.current = 'loading'
         else:
             pass
 
@@ -110,3 +121,32 @@ class VideoScreen(Screen):
             os.remove(self.removable)
         else:
             pass
+
+
+class LoadingScreen(Screen):
+    def on_continue_button_press(self):
+        self.manager.current = 'video'
+        config.previous_screen = 'video'
+
+    def check_download_thread(self):
+        while True:
+            if config.current_thread_id in config.thread_ids:
+                pass
+            else:
+                self.ids.cont.disabled = False
+                self.ids.canc.disabled = True
+                self.ids.load_text.text = "Video is loaded!"
+                break
+            time.sleep(0.1)
+
+    def on_cancel_button_press(self):
+        self.manager.current = config.previous_screen
+        config.thread_ids.pop()
+        config.current_thread_id = 0
+
+    def create_thread(self):
+        checker_thread = threading.Thread(target=self.check_download_thread, daemon=True)
+        checker_thread.start()
+        self.ids.canc.disabled = False
+        self.ids.cont.disabled = True
+        self.ids.load_text.text = "Video is loading..."

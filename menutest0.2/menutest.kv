@@ -18,7 +18,6 @@
     height:self.texture_size[1]+10
     padding:[5,2]
 
-#:import NoTransition kivy.uix.screenmanager.NoTransition
 #:include recipes.kv
 #Some healthy foods with recipes. Same as search basically but has an added recipe displayed.
 #The recipe in the database has to be one line with /n where you want to have an end of line
@@ -71,3 +70,5 @@ ScreenManager1:
         name: 'search'
     RecipeListScreen:
         name: 'healthy'
+    LoadingScreen:
+        name: 'loading'

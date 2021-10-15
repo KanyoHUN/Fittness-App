@@ -26,7 +26,7 @@ class LinkListScreen(Screen):
                             i = 0
                             for video in config.video_dict.keys():
                                 b = Button(text=video, size_hint=(1, None),
-                                           background_color=config.app_color)
+                                           background_color=config.app_color, height=dp(150))
                                 b.font_size = self.width * 0.2
 
                                 # Can modify the above to make GUI better. Do not modify: text, or on_press
